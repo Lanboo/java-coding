@@ -319,7 +319,7 @@ IDao的B实现类：修改了一个Pojo
 */
 ```
 
-#### 2.3 提个问题？
+#### 2.3、 提个问题？
 在`InvocationHandler.invoke`和`MethodInterceptor.intercept`方法中，第一个参数指的是什么？
 （后面有解答）
 
