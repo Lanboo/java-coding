@@ -620,6 +620,7 @@ public class JdkProxy implements InvocationHandler
 在`JdkProxy.invoke`中，使用了`target`这个Object类型的成员变量，而且这个成员变量是在构造方法中赋的值。
 `target`既然是一个对象，而且在`1处`被method（可以看下4.2）使用了，那么`target`肯定是`2处`第二个参数的实现类。
 那么，问：如果`target`不是`2处`第二个参数的实现类，那么`1处`怎么写？
+
 可以在1.1这样写：`return target.update(args);`
 
 
