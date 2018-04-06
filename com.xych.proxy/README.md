@@ -542,7 +542,7 @@ public final class $Proxy0 extends Proxy implements IDao
 5. 根据反射，创建实例对象
 6. 调用者使用 
 
-步骤1、2、4、5，这些都是经常接触的，就不多说了，这里说下步骤3，怎么讲`.java`文件编程生成`.class`文件。
+步骤1、2、4、5，这些都是经常接触的，就不多说了，这里说下步骤3，怎么将`.java`文件编程生成`.class`文件。
 ``` java
 File f; //指向Java文件
 JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -552,3 +552,82 @@ JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, null, nu
 task.call();
 fileManager.close();
 ```
+
+### 6、JDK动态代理类图的扩展
+
+从2.1可以知道，在本文中，JDK代理的类图是下面的样子。
+
+![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-1.png?raw=true)
+
+另外，JDK动态代理的类图还有一种形式,（比如MyBatis中Mapper的代理）
+
+![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-2.png?raw=true)
+
+我们在来看一下JdkProxy这个类
+``` java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+// 实现InvocationHandler，用来它来产生代理类
+public class JdkProxy implements InvocationHandler
+{
+    private Object target = null;
+    private Log log = null;
+
+    public <T> JdkProxy(T target, Log log)
+    {
+        super();
+        this.target = target;
+        this.log = log;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getInstance()
+    {
+        Class<?> clazz = this.target.getClass();
+        /**
+         * Proxy.newProxyInstance 用来产生某接口的代理类
+         * 第一个参数：被代理类的类加载器
+         * 第二个参数：被代理类的所有接口
+         * 第三个参数：InvocationHandler，这里面定义了invoke方法。当代理类调用某方法时，实际上执行的是invoke方法
+         */
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);// 2处
+    }
+
+    /**
+     * 这是代理后代理类在调用任意一个方法的入口
+     */
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
+    {
+        if(method.getName().startsWith("save"))
+        {
+            System.out.println("JdkProxy:走的是save方法");
+            log.doSaveLog();
+            return method.invoke(this.target, args);        // 1处  1.1
+        }
+        else if(method.getName().startsWith("update"))
+        {
+            System.out.println("JdkProxy:走的是update方法");
+            log.doUpdateLog();
+            return method.invoke(this.target, args);        // 1处  1.2
+        }
+        return method.invoke(this.target, args);            // 1处  1.3
+    }
+}
+```
+在`JdkProxy.invoke`中，使用了`target`这个Object类型的成员变量，而且这个成员变量是在构造方法中赋的值。
+`target`既然是一个对象，而且在`1处`被method（可以看下4.2）使用了，那么`target`肯定是`2处`第二个参数的实现类。
+那么，问：如果`target`不是`2处`第二个参数的实现类，那么`1处`怎么写？
+可以在1.1这样写：`return target.update(args);`
+
+
+再来看第二种类图：
+
+![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-2.png?raw=true)
+
+如果JdkProxy中传入的target跟IDao没有实现关系，在那在`1处`我们应该想办法接着调用。
+
+
+
