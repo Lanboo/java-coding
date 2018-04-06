@@ -368,7 +368,7 @@ private static final WeakCache<ClassLoader, Class<?>[], Class<?>>
 
 看看ProxyClassFactory(这个源码在OpenJDK里)
 参考[JDK动态代理的底层实现之Proxy源码分析](http://www.cnblogs.com/liuyun1995/p/8157098.html)
-另外，想知道`WeakCache`是的原理，可以看一下[WeakCache缓存的实现机制](http://www.cnblogs.com/liuyun1995/p/8144676.html)
+另外，想知道`WeakCache`的原理，可以看一下[WeakCache缓存的实现机制](http://www.cnblogs.com/liuyun1995/p/8144676.html)
 ``` java
 byte[] proxyClassFile = ProxyGenerator.generateProxyClass(proxyName,interfaces, accessFlags);
 ```
