@@ -539,7 +539,7 @@ public final class $Proxy0 extends Proxy implements IDao
 3. 编译java文件，生成`.class`文件
 4. 加载class文件
 5. 根据反射，创建实例对象
-6. 调用者使用
+6. 调用者使用 
 
 步骤1、2、4、5，这些都是经常接触的，就不多说了，这里说下步骤3，怎么讲`.java`文件编程生成`.class`文件。
 ``` java
