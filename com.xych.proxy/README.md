@@ -228,6 +228,7 @@ proxyDaoA.save();
 <h6>我想说的是，我们应该重点关注invoke方法，getInstance只是一个不中要的的方法，完全可以抽取到一个工厂类里</h6>
 
 这里画一下类图吧。
+
 ![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-1.png?raw=true)
 
 
