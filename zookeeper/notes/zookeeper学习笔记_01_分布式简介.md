@@ -7,9 +7,9 @@
 #### 1、分布式环境的特点
 > 分布性、并发性、无序性
 
-> 分布性：指分布式系统在物理空间的不连续性。
-> 并发性：不论单机还是集群，程序的并发操作都是很常见的。比如单机下的多线程编程；集群下多个节点访问同一节点的资源。
-> 无序性：因网络传输的不可靠性，你无法保证，接受节点接受消息的顺序和发送顺序保存一致。
+> 分布性：指分布式系统在物理空间的不连续性。<br>
+> 并发性：不论单机还是集群，程序的并发操作都是很常见的。比如单机下的多线程编程；集群下多个节点访问同一节点的资源。<br>
+> 无序性：因网络传输的不可靠性，你无法保证，接受节点接受消息的顺序和发送顺序保存一致。<br>
 
 #### 2、分布式面临的问题
 
@@ -34,25 +34,25 @@
 可以参考：[CAP原理和BASE思想](http://www.jdon.com/37625)
 
 ##### 4.1、CAP
-> [Consistency](https://translate.google.cn/#auto/zh-CN/Consistency)一致性：所有节点上的数据，时刻保持一致。
-> [Availability](https://translate.google.cn/#auto/zh-CN/Availability)可用性：每个请求都能收到相应，无论成功还是失败。即好的相应能力。
+> [Consistency](https://translate.google.cn/#auto/zh-CN/Consistency)一致性：所有节点上的数据，时刻保持一致。<br>
+> [Availability](https://translate.google.cn/#auto/zh-CN/Availability)可用性：每个请求都能收到相应，无论成功还是失败。即好的相应能力。<br>
 > [Partition-tolerance](https://translate.google.cn/#auto/zh-CN/Partition-tolerance)分区容错：当出现网路分区（脑裂）后，保证系统的正常运行。即可靠性。
 
-> <b>定理：任何分布式系统只可同时满足二点，没法三者兼顾。</b>
+> <b>定理：任何分布式系统只可同时满足二点，没法三者兼顾。</b><br>
 > 忠告：不要将精力浪费在如何设计能满足三者的完美分布式系统，而是应该进行取舍。
 
 ##### 4.2、BASE
 
 4.2.1、ACID模型
-> [Atomicity](https://translate.google.cn/#auto/zh-CN/Atomicity)原子性：一个事务中所有操作都必须全部完成，要么全部不完成。
-> [Consistency](https://translate.google.cn/#auto/zh-CN/Consistency)一致性：在事务开始或结束时，数据库应该在一致状态。
-> [Isolation](https://translate.google.cn/#auto/zh-CN/Isolation)隔离性：事务将假定只有它自己在操作数据库，彼此不知晓。
+> [Atomicity](https://translate.google.cn/#auto/zh-CN/Atomicity)原子性：一个事务中所有操作都必须全部完成，要么全部不完成。<br>
+> [Consistency](https://translate.google.cn/#auto/zh-CN/Consistency)一致性：在事务开始或结束时，数据库应该在一致状态。<br>
+> [Isolation](https://translate.google.cn/#auto/zh-CN/Isolation)隔离性：事务将假定只有它自己在操作数据库，彼此不知晓。<br>
 > [Durability](https://translate.google.cn/#auto/zh-CN/Durability)持久性：一旦事务完成，就不能返回。
 
 4.2.2、BASE
 BASE模型反ACID模型，完全不同ACID模型，牺牲高一致性，获得可用性或可靠性。
-> [<b>B</b>asically <b>A</b>vailable](https://translate.google.cn/#auto/zh-CN/Basically%20Available)基本可用。
-> [<b>S</b>oft state](https://translate.google.cn/#auto/zh-CN/Soft%20state)软状态：状态可以有一段时间不同步，异步。
+> [<b>B</b>asically <b>A</b>vailable](https://translate.google.cn/#auto/zh-CN/Basically%20Available)基本可用。<br>
+> [<b>S</b>oft state](https://translate.google.cn/#auto/zh-CN/Soft%20state)软状态：状态可以有一段时间不同步，异步。<br>
 > [<b>E</b>ventually consistent](https://translate.google.cn/#auto/zh-CN/Eventually%20consistent)最终一致：最终数据是一致的就可以了，而不是时时高一致。
 
 
