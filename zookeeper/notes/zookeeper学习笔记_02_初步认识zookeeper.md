@@ -66,8 +66,8 @@ Upgrade: 升级版
 
 > 另外：<br>
 > `leader`接收写请求，会同步到`follower`和`observer`，但是当同步数据到`follower`数量的一半，就会告知客户端写请求成功。<br>
-> `leader`是被投票选举出来的不是配置的，`observer`是需要在配置中特别声明出来。
-> `observer`的配置文件中需要加上`peerType=observer`
+> `leader`是被投票选举出来的不是配置的，`observer`是需要在配置中特别声明出来。<br>
+> `observer`的配置文件中需要加上`peerType=observer`<br>
 ##### 4.3.1、配置
 1. 首先，在<b>每个</b>节点的`zoo.cfg`文件中添加`server.id=ip:port:port`
 ```
@@ -82,7 +82,7 @@ server.4=192.168.27.131:2828:3131:observer
 > 如上配置，代表4个节点组成的集群，其中id=4的节点是observer角色<br>
 > 第一个port，是leader与follower同步数据时使用的端口号<br>
 > 第二个port，当leader不可用时，进行投票<br>
-> 另外，客户端与集群连接的默认端口号是2181
+> 另外，客户端与集群连接的默认端口号是2181<br>
 
 2. <b>每个</b>节点的在`zoo.cfg`中，有个`dataDir`属性，其默认值`/tmp/zookeeper`，在其目录下创建`myid`文件，其文件内容就一行数据，数据内容就是id的值。
 3. 启动<b>每个</b>节点的服务
