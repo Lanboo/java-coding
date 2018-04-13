@@ -52,7 +52,3 @@ BASE模型反ACID模型，完全不同ACID模型，牺牲高一致性，获得�
 > [<b>B</b>asically <b>A</b>vailable](https://translate.google.cn/#auto/zh-CN/Basically%20Available)基本可用。<br>
 > [<b>S</b>oft state](https://translate.google.cn/#auto/zh-CN/Soft%20state)软状态：状态可以有一段时间不同步，异步。<br>
 > [<b>E</b>ventually consistent](https://translate.google.cn/#auto/zh-CN/Eventually%20consistent)最终一致：最终数据是一致的就可以了，而不是时时高一致。
-
-
-
-<br><br><br><br><br><br>学自咕泡学院
