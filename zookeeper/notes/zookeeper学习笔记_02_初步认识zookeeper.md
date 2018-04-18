@@ -68,7 +68,7 @@ Upgrade: 升级版
 > `leader`接收写请求，会同步到`follower`和`observer`，但是当同步数据到`follower`数量的一半，就会告知客户端写请求成功。<br>
 > `leader`是被投票选举出来的不是配置的，`observer`是需要在配置中特别声明出来。<br>
 > `observer`的配置文件中需要加上`peerType=observer`<br>
-##### 4.3.1、配置
+##### 4.3.2、配置
 1. 首先，在<b>每个</b>节点的`zoo.cfg`文件中添加`server.id=ip:port:port`
 ```
 // server.id=ip:port:port
@@ -86,3 +86,6 @@ server.4=192.168.27.131:2828:3131:observer
 
 2. <b>每个</b>节点的在`zoo.cfg`中，有个`dataDir`属性，其默认值`/tmp/zookeeper`，在其目录下创建`myid`文件，其文件内容就一行数据，数据内容就是id的值。
 3. 启动<b>每个</b>节点的服务
+
+##### 4.3.3、`observer`的作用
+可在现有zookeeper集群中加入`observer`节点，接收`leader`的数据，增加集群的读性能，但不会增加`follower`选举的性能消耗。
