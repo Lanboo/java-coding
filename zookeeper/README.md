@@ -6,7 +6,7 @@
 分布式特性、分布式的问题、CAP、BASE
 
 ##### [初步认识zookeeper](notes/zookeeper学习笔记_02_初步认识zookeeper.md)
-分布式特性、分布式的问题、CAP、BASE
+zookeeper是什么、能做什么、特性、单机版安装、集群版安装
 
 ##### [zoo.cfg配置简介](notes/zookeeper学习笔记_03_zoo.cfg配置简介.md)
 zookeeper配置文件zoo.cfg简介
