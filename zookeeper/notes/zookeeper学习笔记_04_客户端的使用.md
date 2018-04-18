@@ -257,7 +257,7 @@ Node not empty: /xych                         // 提示节点不是空的，不�
 ```
 ##### 3.7.2、`listquota path`
 > 获取某节点的配额
-##### 3.7.3、delquota [-n|-b] path
+##### 3.7.3、`delquota [-n|-b] path`
 > 删除配额 <br>
 ``` cmd 
 > delquota -n 5 /xych
@@ -280,3 +280,5 @@ Node not empty: /xych                         // 提示节点不是空的，不�
 #### 3.10、连接服务端、断开服务端
 > `connect ip:port`<br>
 > `close`<br>
+
+参考：[zookeeper客户端命令详解](https://blog.csdn.net/heihei36/article/details/70871074)
