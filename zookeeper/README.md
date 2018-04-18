@@ -11,6 +11,9 @@
 ##### [zoo.cfg配置简介](notes/zookeeper学习笔记_03_zoo.cfg配置简介.md)
 zookeeper配置文件zoo.cfg简介
 
+##### [zookeeper客户端的使用](notes/zookeeper学习笔记_04_客户端的使用.md)
+zookeeper中的一些概念、客户端的使用
+
 
 
 
