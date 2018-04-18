@@ -57,6 +57,8 @@ Upgrade: 升级版
     `sh zkServer.sh`
 5. 启动客户端`zkCli.sh`，连接zookeeper<br>
 `sh zkCli.sh -server  ip:port`   //其中ip是服务器ip，端口号在zoo.cfg中有配置，默认2181
+6. 检查zookeeper是否运行
+`echo ruok | nc localhost 2181`
 
 #### 4.3、集群版
 ##### 4.3.1、集群的角色
