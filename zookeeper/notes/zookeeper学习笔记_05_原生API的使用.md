@@ -244,56 +244,34 @@ ctx|异步创建方法参数。用户传递一个对象，可以在回调方法�
 - <b>Watcher是一次性的，用完就会失效</b><br>
 
 参考：[ZooKeeper监听机制](https://www.cnblogs.com/programlearning/archive/2017/05/10/6834963.html)
-<table style="text-align:left;font-size:14px">
-<tr>
-    <td  style="border-top:double;">事件类型</td>
-    <td style="border-top:double;">含义</td>
-</tr>
-<tr>
-    <td>EventType.None</td> <td>与服务器建立连接时触发</td>
-</tr>
-<tr>
-    <td>EventType.NodeCreated</td> <td>被监控的节点被创建触发</td>
-</tr>
-<tr>
-    <td>EventType.NodeDeleted</td> <td>被监控的节点被删除触发</td>
-</tr>
-<tr>
-    <td>EventType.NodeDataChanged</td> <td>被监控的节点被修改触发</td>
-</tr>
-<tr>
-    <td style="border-bottom:double;">EventType.NodeChildrenChanged</td>
-    <td style="border-bottom:double;">被监控的节点的子节点<b>数量</b>发生改变时触发</td>
-</tr>
-</table>
 
-<table style="text-align:left;font-size:14px">
-<tr>
-    <td  style="border-top:double;">操作</td>
-    <td style="border-top:double;">Event For "/path"</td>
-    <td style="border-top:double;">Event For "/path/child"</td>
-</tr>
-<tr>
-    <td>create("/path")</td> <td>EventType.NodeCreated</td> <td>NA</td>
-</tr>
-<tr>
-    <td>delete("/path")</td> <td>EventType.NodeDeleted</td> <td>NA</td>
-</tr>
-<tr>
-    <td>setData("/path")</td> <td>EventType.NodeDataChanged</td> <td>NA</td>
-</tr>
-<tr>
-    <td>create("/path/child")</td> <td>EventType.NodeChildrenChanged</td> <td>EventType.NodeCreated</td>
-</tr>
-<tr>
-    <td>delete("/path/child")</td> <td>EventType.NodeChildrenChanged</td> <td>EventType.NodeDeleted</td>
-</tr>
-<tr>
-    <td style="border-bottom:double;">setData("/path/child")</td>
-    <td style="border-bottom:double;">NA</td>
-    <td style="border-bottom:double;">EventType.NodeDataChanged</td>
-</tr>
-</table>
+#### 4.1、事件类型
+事件类型|含义
+:-|:-
+EventType.None|与服务器建立连接时触发
+EventType.NodeCreated|被监控的节点被创建触发
+EventType.NodeDeleted|被监控的节点被删除触发
+EventType.NodeDataChanged|被监控的节点被修改触发
+EventType.NodeChildrenChanged|被监控的节点的子节点<b>数量</b>发生改变时触发
+
+#### 4.2、读操作绑定事件
+读操作|含义
+:-|:-
+new ZooKeeper|不会指定某节点，故触发类型为`EventType.None`
+exists|判断某节点是否存在，同时对该节点添加Watcher
+getData|获取某节点的值，同时对该节点添加Watcher
+getChildren|获取某节点的子节点列表，同时对该节点添加Watcher
+
+#### 4.3、写操作触发事件
+写操作|Event For "/path"|Event For "/path/child"
+:-|:-|:-
+create("/path")|EventType.NodeCreated|-
+delete("/path")|EventType.NodeDeleted|-
+setData("/path")|EventType.NodeDataChanged|-
+create("/path/child")|EventType.NodeChildrenChanged|EventType.NodeCreated
+delete("/path/child")|EventType.NodeChildrenChanged|EventType.NodeDeleted
+setData("/path/child")|-|EventType.NodeDataChanged
+####
 
 
 
