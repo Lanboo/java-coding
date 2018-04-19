@@ -14,7 +14,11 @@ zookeeper配置文件zoo.cfg简介
 ##### 4、[zookeeper客户端的使用](notes/zookeeper学习笔记_04_客户端的使用.md)
 zookeeper中的一些概念、客户端的使用
 
-##### 5、[zookeeper的Java API的使用](notes/zookeeper学习笔记_05_API的使用.md)
+##### 5、[zookeeper的Java API的使用](notes/zookeeper学习笔记_05_原生API的使用.md)
+原生API的使用，包括：
+1. 建立连接、创建、修改、删除
+2. exists、getData、getChildren
+3. Watcher事件监控
 
 
 
