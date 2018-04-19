@@ -21,7 +21,87 @@ firewall-cmd --zone=public --add-port=80/tcp --permanent    // 永久生效
 // 重启防火墙
 firewall-cmd --reload
 ```
-#### 2、创建连接、创建节点、修改节点、删除节点
+### 2、创建连接、创建节点、修改节点、删除节点
+#### 2.1、创建连接
+``` java
+// org.apache.zookeeper.ZooKeeper
+public ZooKeeper(String connectString, int sessionTimeout, Watcher watcher)
+public ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, boolean canBeReadOnly)
+public ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, long sessionId, byte[] sessionPasswd)
+public ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, long sessionId, byte[] sessionPasswd, boolean canBeReadOnly)
+```
+参数|含义
+:-|:-
+connectString|Zookeeper服务器的地址和端口号`ip:port`。集群环境使用逗号隔开。
+sessionTimeout|超时时间，超过一定时间不在连接
+watcher|监听事件。
+canBeReadOnly|表示当前new的对象只能执行读操作，不能执行写操作。默认：false
+sessionId|因Zookeeper的重连机制，即断开连接后，在一定时间内可再次连接，保持同一个会话。<br>`zookeeper.getSessionId()`可以在断开连接前获取sessionId
+sessionPasswd|因Zookeeper的重连机制，即断开连接后，在一定时间内可再次连接，保持同一个会话。<br>`zookeeper.getSessionPasswd()`sessionPasswd
+
+
+参考：[Zookeeper实例原生API--复用sessionId和sessionPasswd](https://blog.csdn.net/andy2019/article/details/73065449)
+#### 2.2、创建节点
+``` java
+String create(final String path, byte[] data, List<ACL> acl, CreateMode createMode)
+void create(final String path, byte[] data, List<ACL> acl, CreateMode createMode,  StringCallback cb, Object ctx)
+```
+
+参数|含义
+:-|:-
+path|被创建节点的路径
+data|被创建节点的值
+acl|acl策略。详见[zookeeper客户端的使用](zookeeper学习笔记_04_客户端的使用.md)的1.6章节
+createMode|节点类型，临时或者持久，有序节点等。详见[zookeeper客户端的使用](zookeeper学习笔记_04_客户端的使用.md)的1.2、1.3章节
+cb|异步创建方法参数。注册的回调函数，需实现StringCallback接口。数据节点创建完成之后，会调用此方法进行业务逻辑处理。主要针对`public void processResult(int rc, String path, Object ctx, String name)`接口进行重写。<br>参考：[Zookeeper客户端API之创建节点（七）](https://blog.csdn.net/wo541075754/article/details/65625481)
+ctx|异步创建方法参数。用户传递一个对象，可以在回调方法执行时使用
+
+- <b>临时节点下不能创建子节点</b><br>
+- <b>因为是原生API，故不能在没有父节点的前提下直接创建子节点</b><br>
+
+##### 2.2.1、关于StringCallback
+转自：[Zookeeper客户端API之创建节点（七）](https://blog.csdn.net/wo541075754/article/details/65625481)
+
+`StringCallback`接口继承了`AsyncCallback`接口，来实现回调时的业务处理。<br>
+其中`AsyncCallback`接口还包8个回调接口：`StatCallback`、`DataCallback`、`ACLCallback`、`ChildrenCallback`、`Children2Callback`、`VoidCallback`、`MultiCallback`、`StringCallback`。可以在不同的异步接口中实现不同的回调接口。
+
+`StringCallback`接口的`public void processResult(int rc, String path, Object ctx, String name)`方法。
+
+参数|含义
+:-|:-
+rc|服务器的响应码，即`Event.KeeperState`，0表示调用成功，-4表示连接已断开，-110表示指定节点已存在，-112表示会话已过期。
+path|调用create方法时传入的path。
+ctx|调用create方法时传入的ctx。
+name|创建成功的节点名称。
+
+
+#### 2.3、修改节点
+``` java
+Stat setData(final String path, byte data[], int version)
+public void setData(final String path, byte data[], int version, StatCallback cb, Object ctx)
+```
+参数|含义
+:-|:-
+path|被修改节点的路径
+data|被修改节点的新值
+version|代表节点的版本号，如果该值与zookeeper服务器此节点的dataVersion属性值不相同，则修改失败。 `-1`代表忽略版本号的作用，强制修改！
+cb|异步创建方法参数。注册的回调函数，需实现StatCallback接口。数据节点创建完成之后，会调用此方法进行业务逻辑处理。
+ctx|异步创建方法参数。用户传递一个对象，可以在回调方法执行时使用
+返回值Stat|描述一个节点的信息，具体可以查看[zookeeper客户端的使用](zookeeper学习笔记_04_客户端的使用.md)的章节2
+
+- 关于`StatCallback`，与`StringCallback`类似。
+    - 实现的方法是`public void processResult(int rc, String path, Object ctx, Stat stat)`
+
+#### 2.4、删除节点
+``` java
+void delete(final String path, int version)
+void delete(final String path, int version, VoidCallback cb, Object ctx)
+```
+- 与修改节点`setData`方法类似。
+- <b>因为是原始API，不允许删除存在子节点的节点</b>
+
+#### 2.5、Demo
+
 ``` java
 public class ApiZookeeper
 {
@@ -100,35 +180,14 @@ connect CONNECTED
 删除成功
 */
 ```
-> - `new ZooKeeper(String connectString, int sessionTimeout, Watcher watcher)`<br>
-> `connectString`：连接字符串，指zookeeper服务器的`ip:port`，集群环境使用逗号`,`隔开。<br>
-> `sessionTimeout`：超时时间，超过一定时间不在连接<br>
-> `watcher`：监听事件。在这里当连接状态改变时触发。[注意Watcher是一次性的，用完就会失效]<br>
 
-> - `String ZooKeeper.create(String path, byte[] data, List<ACL> acl, CreateMode createMode)`<br>
-> `path`、`data`分别是节点路径和值<br>
-> `acl` 是节点访问权限，谁？有什么权限？ 详见[zookeeper客户端的使用](zookeeper学习笔记_04_客户端的使用.md)的1.6章节<br>
-> `createMode`节点类型，临时或者持久，有序节点等<br>
-> 返回节点的路径
->   - <b>临时节点下不能创建子节点</b><br>
->   - <b>因为是原始API，故不能在没有父节点的前提下直接创建子节点</b><br>
-
-> - `Stat ZooKeeper.setData(final String path, byte data[], int version)`<br>
-> `path`、`data`分别是节点路径和新值<br>
-> `version`代表节点的版本号，如果该值与zookeeper服务器此节点的dataVersion属性值不相同，则修改失败。`-1`代表忽略版本号的作用，强制修改！<br>
-> `Stat`是描述一个节点的信息，具体可以查看[zookeeper客户端的使用](zookeeper学习笔记_04_客户端的使用.md)的章节2<br>
-
-> - `void ZooKeeper.delete(final String path, int version)`<br>
-> `path`分别是节点路径<br>
-> `version`代表节点的版本号。具体作用与set相同。<br>
->   - <b>因为是原始API，不允许删除存在子节点的节点</b><br>
-
-#### 3、exists、getData、getChildren
+### 3、exists、getData、getChildren
 
 
 
-#### 4、Watcher事件监控
-<b>Watcher是一次性的，用完就会失效</b><br>
+### 4、Watcher事件监控
+- <b>Watcher是一次性的，用完就会失效</b><br>
+
 参考：[ZooKeeper监听机制](https://www.cnblogs.com/programlearning/archive/2017/05/10/6834963.html)
 <table style="text-align:left;font-size:14px">
 <tr>
