@@ -34,7 +34,7 @@ public ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, long
 :-|:-
 connectString|Zookeeper服务器的地址和端口号`ip:port`。集群环境使用逗号隔开。
 sessionTimeout|超时时间，超过一定时间不在连接
-watcher|监听事件。
+watcher|监听事件
 canBeReadOnly|表示当前new的对象只能执行读操作，不能执行写操作。默认：false
 sessionId|因Zookeeper的重连机制，即断开连接后，在一定时间内可再次连接，保持同一个会话。<br>`zookeeper.getSessionId()`可以在断开连接前获取sessionId
 sessionPasswd|因Zookeeper的重连机制，即断开连接后，在一定时间内可再次连接，保持同一个会话。<br>`zookeeper.getSessionPasswd()`sessionPasswd
@@ -182,8 +182,63 @@ connect CONNECTED
 ```
 
 ### 3、exists、getData、getChildren
+#### 3.1、exists
+> 判断某节点是否存在
+``` java
+Stat exists(String path, boolean watch)
+Stat exists(final String path, Watcher watcher)
+void exists(String path, boolean watch, StatCallback cb, Object ctx)
+void exists(final String path, Watcher watcher, StatCallback cb, Object ctx)
+```
+参数|含义
+:-|:-
+path|被判断节点的路径
+watch|是否添加一个默认Watcher
+watcher|监听事件
+cb|异步创建方法参数。注册的回调函数，需实现StatCallback接口。数据节点创建完成之后，会调用此方法进行业务逻辑处理。
+ctx|异步创建方法参数。用户传递一个对象，可以在回调方法执行时使用
 
+关于`StatCallback`可以参考本文2.2.1。
 
+#### 3.2、getData
+> 获取节点内容，同步获取和异步获取
+``` java
+byte[] getData(String path, boolean watch, Stat stat)
+byte[] getData(final String path, Watcher watcher, Stat stat)
+void getData(String path, boolean watch, DataCallback cb, Object ctx)
+void getData(final String path, Watcher watcher, DataCallback cb, Object ctx)
+```
+参数|含义
+:-|:-
+path|节点的路径
+watch|是否注册一个默认Watcher
+watcher|监听事件
+cb|异步创建方法参数。注册的回调函数，需实现DataCallback接口。数据节点创建完成之后，会调用此方法进行业务逻辑处理。
+ctx|异步创建方法参数。用户传递一个对象，可以在回调方法执行时使用
+
+关于`DataCallback`可以参考本文2.2.1。
+#### 3.3、getChildren
+> 获取子节点列表，同步获取和异步获取
+``` java
+List<String> getChildren(String path, boolean watch)
+List<String> getChildren(final String path, Watcher watcher)
+List<String> getChildren(String path, boolean watch, Stat stat)
+List<String> getChildren(final String path, Watcher watcher, Stat stat)
+void getChildren(String path, boolean watch, ChildrenCallback cb, Object ctx)
+void getChildren(String path, boolean watch, Children2Callback cb, Object ctx)
+void getChildren(final String path, Watcher watcher, ChildrenCallback cb, Object ctx)
+void getChildren(final String path, Watcher watcher, Children2Callback cb, Object ctx)
+```
+参数|含义
+:-|:-
+path|节点的路径
+watch|是否注册一个默认Watcher
+watcher|监听事件
+stat|描述一个节点的信息<br>会将path指定的节点的信息更新<br>具体可以查看[zookeeper客户端的使用](zookeeper学习笔记_04_客户端的使用.md)的章节2
+cb|异步创建方法参数。注册的回调函数，需实现ChildrenCallback、Children2Callback接口。数据节点创建完成之后，会调用此方法进行业务逻辑处理。
+ctx|异步创建方法参数。用户传递一个对象，可以在回调方法执行时使用
+
+关于`ChildrenCallback`、`Children2Callback`可以参考本文2.2.1。
 
 ### 4、Watcher事件监控
 - <b>Watcher是一次性的，用完就会失效</b><br>
