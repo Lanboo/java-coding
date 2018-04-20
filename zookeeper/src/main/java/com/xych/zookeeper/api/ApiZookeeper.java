@@ -12,7 +12,7 @@ import org.apache.zookeeper.data.Stat;
 public class ApiZookeeper
 {
     // 集群环境用,隔开
-    private static final String CONNECTSTRING = "192.168.27.128:2181";
+    private static final String CONNECTSTRING = "192.168.27.131:2181";
     private static ZooKeeper zookeeper;
 
     public static void main(String[] args) throws Exception
