@@ -1,6 +1,6 @@
 [toc]
 
-## zookeeper 原生API的使用
+## Zookeeper 原生API的使用
 ### 1、准备工作
 #### 1.1、jar包
 ``` xml
