@@ -345,6 +345,9 @@ setData("/path/child")|-|EventType.NodeDataChanged
     </tr>
 </table>
 
+> - `create("/path/child")`和`delete("/path/child")`<b>只会触发</b>`getChildren`对`"/path"`的绑定事件；<br>
+> - 不会触发`exists`、`getData`对`"/path"`的绑定事件。<br>
+
 #### 4.4、Demo
 
 ``` java
