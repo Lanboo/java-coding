@@ -1,5 +1,5 @@
 package com.xych.zookeeper.zkclient;
 
-public class ZKClientDemo
+public class ZkClientDemo
 {
 }
