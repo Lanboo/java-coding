@@ -1,7 +1,7 @@
 [toc]
 
-## Zookeeper Zookeeper开源客户端ZKClient和Curator简介
-转自[Zookeeper Zookeeper开源客户端ZKClient和Curator简介](https://blog.csdn.net/wo541075754/article/details/68067872)
+## Zookeeper Zookeeper开源客户端ZkClient和Curator简介
+转自[Zookeeper Zookeeper开源客户端ZkClient和Curator简介](https://blog.csdn.net/wo541075754/article/details/68067872)
 
 
 ### 1、Zookeeper API不足之处
