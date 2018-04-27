@@ -25,7 +25,7 @@ zookeeper中的一些概念、客户端的使用
 2. ZkClient简介
 3. Curator简介
 
-##### 7、[Zookeeper开源客户端ZKClient的使用](notes/zookeeper学习笔记_07_ZKClient的使用.md)
+##### 7、[Zookeeper开源客户端ZKClient的使用](notes/zookeeper学习笔记_07_ZkClient的使用.md)
 
 
 
