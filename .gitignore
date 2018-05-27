@@ -1,0 +1,13 @@
+# 忽略maven项目中的target文件夹
+*/target
+
+# 忽略Eclipse相关文件
+.classpath
+.project
+.settings
+
+# Compiled class file
+*.class
+
+# 本身也忽略
+# .gitignore
