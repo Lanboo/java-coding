@@ -8,3 +8,6 @@
 
 #### zookeepre
 [学习zookeeper](https://github.com/Lanboo/JavaCoding/tree/master/zookeeper)
+
+#### Linux
+[Linux常用知识点](https://github.com/Lanboo/JavaCoding/tree/master/Linux)
