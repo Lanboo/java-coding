@@ -16,11 +16,12 @@
 `mkdir dirName`|创建文件夹
 `tar -zxvf fileName`|解压`.tar.gz`文件|`-zxvf` 可以记成“至 小威风”
 `rm -rf file`|递归删除文件或文件夹，<b>不可恢复</b>
+`ifconfg -a`|查看当前IP
 
 </div>
-## 命令详解
+## 2、命令详解
 
-### `rm`命令
+### 2.1、`rm`命令
 参考：[rm命令](http://man.linuxde.net/rm)
 
 - 语法<br>
@@ -37,14 +38,13 @@
 `-r`、`-R`|递归处理，将指定目录下的所有文件与子目录一并处理；
 `--preserve-root`|不对根目录进行递归操作；
 `-v`|显示指令的详细执行过程。
-
+</div>
 - 参数<br>
 文件：指定被删除的文件列表，如果参数中含有目录，则必须加上`-r`或者`-R`选项。
 
 - 实例
 ``` shell
 > rm -i test example
-Remove test ?n（不删除文件test)
+Remove test ?n（不删 除文件test)
 Remove example ?y（删除文件example)
 ```
-</div>
