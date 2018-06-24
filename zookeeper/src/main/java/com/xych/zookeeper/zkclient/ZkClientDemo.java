@@ -10,19 +10,26 @@ import com.xych.zookeeper.zkclient.serializer.JacksonSerializer;
 
 public class ZkClientDemo
 {
+    // 集群环境用,隔开
     public static final String CONNECTSTRING = "192.168.27.133:2181";
     private static ZkClient zkClient;
 
     public static void main(String[] args)
     {
-        connect();
-        createNode();
-        existsNode();
-        getNode();
-        setNode();
-        deleteNode();
+        connect();// 创建连接
+        createNode();// 创建节点 
+        existsNode();// 节点是否存在
+        getNode();// 获取节点信息
+        setNode();// 修改节点
+        deleteNode();// 删除节点
     }
 
+    /**
+     * 删除节点
+     * 
+     * @author 晓月残魂
+     * @date 2018年6月24日下午10:19:37
+     */
     private static void deleteNode()
     {
         //boolean b1 = zkClient.delete("/user");
@@ -31,6 +38,12 @@ public class ZkClientDemo
         System.out.println("是否删除：" + b2);
     }
 
+    /**
+     * 修改节点值
+     * 
+     * @author 晓月残魂
+     * @date 2018年6月24日下午10:19:23
+     */
     private static void setNode()
     {
         User user = new User("xych2", 24);
@@ -40,6 +53,12 @@ public class ZkClientDemo
         System.out.println("重置/user：" + stat);
     }
 
+    /**
+     * 获取节点信息
+     * 
+     * @author 晓月残魂
+     * @date 2018年6月24日下午10:19:12
+     */
     private static void getNode()
     {
         User user = zkClient.readData("/user");
@@ -50,12 +69,24 @@ public class ZkClientDemo
         System.out.println("节点信息：" + stat);
     }
 
+    /**
+     * 节点是否存
+     * 
+     * @author 晓月残魂
+     * @date 2018年6月24日下午10:19:00
+     */
     private static void existsNode()
     {
         boolean b = zkClient.exists("/user");
         System.out.println("/user节点是否存在：" + b);
     }
 
+    /**
+     * 创建节点
+     * 
+     * @author 晓月残魂
+     * @date 2018年6月24日下午10:18:47
+     */
     private static void createNode()
     {
         User user = new User("xych", 24);
@@ -63,6 +94,12 @@ public class ZkClientDemo
         System.out.println("创建节点：" + path);
     }
 
+    /**
+     * 创建连接
+     * 
+     * @author 晓月残魂
+     * @date 2018年6月24日下午10:18:37
+     */
     private static void connect()
     {
         //zkClient = new ZkClient(CONNECTSTRING);
