@@ -20,6 +20,7 @@
 `ssh [-p port] userName@host`|ssh远程连接,之后输入密码|`ssh root@192.168.27.129`<br>`ssh -p 22 root@192.168.27.129`
 
 </div>
+
 ## 2、命令详解
 
 ### 2.1、`rm`命令
