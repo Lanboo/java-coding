@@ -29,6 +29,10 @@ zookeeper中的一些概念、客户端的使用
 1. 建立连接、创建、获取、修改、删除
 
 
+##### 8、[Zookeeper开源客户端ZKClient的使用_Watcher事件](notes/zookeeper学习笔记_08_ZkClient的使用_Watcher事件.md)
+1. Listener
+2. Watcher触发
+
 
 
 
