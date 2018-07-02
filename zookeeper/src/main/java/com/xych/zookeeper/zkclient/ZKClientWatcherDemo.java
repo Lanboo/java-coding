@@ -36,42 +36,42 @@ public class ZKClientWatcherDemo
 
     private static void deleteChildNode()
     {
-        boolean b = zkClient.delete("/xych/child", -1);
-        log.info("是否删除/xych/child：{}", b);
+        log.info("删除/xych/child");
+        zkClient.delete("/xych/child", -1);
     }
 
     private static void editChildNode()
     {
+        log.info("修改子节点/xych/child");
         User user = new User("xych2", 24);
-        Stat stat = zkClient.writeDataReturnStat("/xych/child", user, -1);
-        log.info("修改子节点/xych/child：{}", stat.toString().trim());
+        zkClient.writeDataReturnStat("/xych/child", user, -1);
     }
 
     private static void createChildNode()
     {
+        log.info("创建子节点");
         User user = new User("child", 3);
-        String path = zkClient.create("/xych/child", user, CreateMode.EPHEMERAL);
-        log.info("创建子节点：{}", path);
+        zkClient.create("/xych/child", user, CreateMode.EPHEMERAL);
     }
 
     private static void deleteNode()
     {
-        boolean b = zkClient.delete("/xych", -1);
-        log.info("是否删除/xych：{}", b);
+        log.info("删除/xych");
+        zkClient.delete("/xych", -1);
     }
 
     private static void editNode()
     {
+        log.info("修改节点/xych");
         User user = new User("xych2", 24);
-        Stat stat = zkClient.writeDataReturnStat("/xych", user, -1);
-        log.info("修改节点/xych：{}", stat.toString().trim());
+        zkClient.writeDataReturnStat("/xych", user, -1);
     }
 
     private static void createNode()
     {
+        log.info("创建节点：{}", "/xych");
         User user = new User("xych", 24);
-        String path = zkClient.create("/xych", user, CreateMode.PERSISTENT);//临时节点不能添加字节点
-        log.info("创建节点：{}", path);
+        zkClient.create("/xych", user, CreateMode.PERSISTENT);//临时节点不能添加字节点
     }
 
     private static void addListener()
