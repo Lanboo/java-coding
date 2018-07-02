@@ -271,7 +271,6 @@ setData("/path")|EventType.NodeDataChanged|-
 create("/path/child")|EventType.NodeChildrenChanged|EventType.NodeCreated
 delete("/path/child")|EventType.NodeChildrenChanged|EventType.NodeDeleted
 setData("/path/child")|-|EventType.NodeDataChanged
-####
 
 #### 4.4、写操作触发[读操作绑定的事件]
 <table>
