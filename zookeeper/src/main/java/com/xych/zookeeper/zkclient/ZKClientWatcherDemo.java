@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
 import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.data.Stat;
 
 import com.xych.zookeeper.zkclient.listener.ChildListener;
 import com.xych.zookeeper.zkclient.listener.DataListener;
