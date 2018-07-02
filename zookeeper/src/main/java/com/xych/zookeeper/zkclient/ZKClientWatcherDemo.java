@@ -30,7 +30,7 @@ public class ZKClientWatcherDemo
         editNode();// 修改节点
         createChildNode();// 添加子节点
         editChildNode();// 修改子节点
-        deleteChildNode();
+        deleteChildNode();// 删除子节点
         deleteNode();// 删除节点
     }
 
