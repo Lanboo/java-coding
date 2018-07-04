@@ -2,6 +2,10 @@
 # ZkClient_Wathcher机制实现分析
 > 基于`0.10`版本
 
+> 目的：
+> 1. Listener是怎么代替Watcher？
+> 2. Watcher是怎么反复注册的？
+
 ## 1、ZKClient与Zookeeper的类图
 ![](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/Zookeeper-ZkClient-1.png?raw=true)
 
@@ -94,5 +98,82 @@ public class ZkConnection implements IZkConnection {
 }
 ```
 > 可以看出，ZkConnection的实例化时并没有做什么事情，实例化Zookeeper对象是在connect方法中完成的，同时还指定了默认Watcher为ZkClient。
+
+## subscribeDataChanges
+``` java
+public class ZkClient implements Watcher {
+    private final Map<String, Set<IZkChildListener>> _childListener = new ConcurrentHashMap<String, Set<IZkChildListener>>();
+    private final ConcurrentHashMap<String, Set<IZkDataListener>> _dataListener = new ConcurrentHashMap<String, Set<IZkDataListener>>();
+
+    // 为某个节点添加Listener（监控某节点的数据变化）
+    public void subscribeDataChanges(String path, IZkDataListener listener) {
+        Set<IZkDataListener> listeners;
+        synchronized (_dataListener) {
+            listeners = _dataListener.get(path);
+            if (listeners == null) {
+                listeners = new CopyOnWriteArraySet<IZkDataListener>();
+                _dataListener.put(path, listeners);
+            }
+            listeners.add(listener);
+        }
+        watchForData(path);
+        LOG.debug("Subscribed data changes for " + path);
+    }
+
+    // 移除某个节点的Listener
+    public void unsubscribeDataChanges(String path, IZkDataListener dataListener) {
+        //代码省略
+    }
+
+    // 为某个节点添加Listener（监控子节点数量的变化，不监控子节点数据的变化）
+    public List<String> subscribeChildChanges(String path, IZkChildListener listener) {
+        synchronized (_childListener) {
+            Set<IZkChildListener> listeners = _childListener.get(path);
+            if (listeners == null) {
+                listeners = new CopyOnWriteArraySet<IZkChildListener>();
+                _childListener.put(path, listeners);
+            }
+            listeners.add(listener);
+        }
+        return watchForChilds(path);
+    }
+
+    // 移除某个节点的Listener
+    public void unsubscribeChildChanges(String path, IZkChildListener childListener) {
+        //代码省略
+    }
+
+    public void watchForData(final String path) {
+        retryUntilConnected(new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                _connection.exists(path, true);
+                return null;
+            }
+        });
+    }
+
+    public List<String> watchForChilds(final String path) {
+        if (_zookeeperEventThread != null && Thread.currentThread() == _zookeeperEventThread) {
+            throw new IllegalArgumentException("Must not be done in the zookeeper event thread.");
+        }
+        return retryUntilConnected(new Callable<List<String>>() {
+            @Override
+            public List<String> call() throws Exception {
+                exists(path, true);
+                try {
+                    return getChildren(path, true);
+                } catch (ZkNoNodeException e) {
+                    // ignore, the "exists" watch will listen for the parent node to appear
+                }
+                return null;
+            }
+        });
+    }
+}
+```
+> 以`subscribeDataChanges`方法为例，做了两个事情：
+> - 将listener放到Map中
+> - 
 
 
