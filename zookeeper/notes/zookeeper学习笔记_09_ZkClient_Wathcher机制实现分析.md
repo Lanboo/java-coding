@@ -99,7 +99,7 @@ public class ZkConnection implements IZkConnection {
 ```
 > 可以看出，ZkConnection的实例化时并没有做什么事情，实例化Zookeeper对象是在connect方法中完成的，同时还指定了默认Watcher为ZkClient。
 
-## subscribeDataChanges
+## 3、Listener与Watcher之间的关联
 ``` java
 public class ZkClient implements Watcher {
     private final Map<String, Set<IZkChildListener>> _childListener = new ConcurrentHashMap<String, Set<IZkChildListener>>();
@@ -114,8 +114,10 @@ public class ZkClient implements Watcher {
                 listeners = new CopyOnWriteArraySet<IZkDataListener>();
                 _dataListener.put(path, listeners);
             }
+            // 将Listener添加到this._dataListener
             listeners.add(listener);
         }
+        // 调用Zookeeper，注册Watcher事件
         watchForData(path);
         LOG.debug("Subscribed data changes for " + path);
     }
@@ -147,6 +149,7 @@ public class ZkClient implements Watcher {
         retryUntilConnected(new Callable<Object>() {
             @Override
             public Object call() throws Exception {
+                // 回调：调用ZkConnection，接着调用Zookeeper的exists方法
                 _connection.exists(path, true);
                 return null;
             }
@@ -174,6 +177,11 @@ public class ZkClient implements Watcher {
 ```
 > 以`subscribeDataChanges`方法为例，做了两个事情：
 > - 将listener放到Map中
-> - 
+> - 调用`watchForData`，回调的形式，调用ZkConnection，调用Zookeeper。
+>   - 这里注意，Zookeeper的默认Watcher在创建时就被赋值成ZkClinet，可以参考ZkConnection.connect方法
+
+> 上面讲了下注册Listener时是怎么在Zookeeper服务端注册Watcher事件的。
+
+
 
 
