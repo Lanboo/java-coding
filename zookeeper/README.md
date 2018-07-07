@@ -34,7 +34,9 @@ zookeeper中的一些概念、客户端的使用
 2. Watcher触发 
 
 ##### 9、[ZkClient_Wathcher机制实现分析](notes/zookeeper学习笔记_09_ZkClient_Wathcher机制实现分析.md)
-1.源码分析
+1. 首先，实例化ZkClient对象时，通过ZkConnection指定Zookeeper的默认Watcher为ZkClient
+2. 其次，在`subscribeXxx`方法中，为某节点添加Listener，以及向服务器注册默认Watcher
+3. 最后，ZkClient实现Watcher接口，在`process`方法中触发Listener和Watcher的反复注册
 
 
 
