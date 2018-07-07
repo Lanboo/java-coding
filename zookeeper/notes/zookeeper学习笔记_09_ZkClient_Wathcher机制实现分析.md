@@ -149,7 +149,7 @@ public class ZkClient implements Watcher {
         retryUntilConnected(new Callable<Object>() {
             @Override
             public Object call() throws Exception {
-                // 注册Watcher
+                // 注册Watcher(Zookeeper的默认事件在ZkConnection.connect方法中被指定为ZkClient)
                 // 回调：调用ZkConnection，接着调用Zookeeper的exists方法
                 _connection.exists(path, true);
                 return null;
@@ -183,6 +183,186 @@ public class ZkClient implements Watcher {
 
 > 上面讲了下注册Listener时是怎么在Zookeeper服务端注册Watcher事件的。
 
+## 4、`ZkClient`是`Watcher`接口的实现类
+``` java
+public class ZkClient implements Watcher {
+    @Override
+    public void process(WatchedEvent event) {
+        LOG.debug("Received event: " + event);
+        _zookeeperEventThread = Thread.currentThread();
 
+        // 判断这次Watcher的事件类型
+        boolean stateChanged = event.getPath() == null;
+        boolean znodeChanged = event.getPath() != null;
+        // 节点被创建、修改、删除或者子节点数量发生变化
+        boolean dataChanged = event.getType() == EventType.NodeDataChanged || event.getType() == EventType.NodeDeleted || event.getType() == EventType.NodeCreated
+                || event.getType() == EventType.NodeChildrenChanged;
 
+        getEventLock().lock();
+        try {
 
+            // We might have to install child change event listener if a new node was created
+            if (getShutdownTrigger()) {
+                LOG.debug("ignoring event '{" + event.getType() + " | " + event.getPath() + "}' since shutdown triggered");
+                return;
+            }
+            if (stateChanged) {
+                processStateChanged(event);
+            }
+            if (dataChanged) {
+                // 节点发生变化（被创建、修改、删除或者子节点数量）
+                processDataOrChildChange(event);
+            }
+        } finally {
+            if (stateChanged) {
+                getEventLock().getStateChangedCondition().signalAll();
+
+                // If the session expired we have to signal all conditions, because watches might have been removed and
+                // there is no guarantee that those
+                // conditions will be signaled at all after an Expired event
+                // TODO PVo write a test for this
+                if (event.getState() == KeeperState.Expired) {
+                    getEventLock().getZNodeEventCondition().signalAll();
+                    getEventLock().getDataChangedCondition().signalAll();
+                    // We also have to notify all listeners that something might have changed
+                    fireAllEvents();
+                }
+            }
+            if (znodeChanged) {
+                getEventLock().getZNodeEventCondition().signalAll();
+            }
+            if (dataChanged) {
+                getEventLock().getDataChangedCondition().signalAll();
+            }
+            getEventLock().unlock();
+            LOG.debug("Leaving process event");
+        }
+    }
+
+    private void processDataOrChildChange(WatchedEvent event) {
+        final String path = event.getPath();
+
+        // 当该节点被创建、删除或者子节点数量发生变化
+        // 触发IZkChildListener
+        if (event.getType() == EventType.NodeChildrenChanged || event.getType() == EventType.NodeCreated || event.getType() == EventType.NodeDeleted) {
+            Set<IZkChildListener> childListeners = _childListener.get(path);
+            if (childListeners != null && !childListeners.isEmpty()) {
+                fireChildChangedEvents(path, childListeners);
+            }
+        }
+
+        // 当节点被创建、修改、删除
+        // 触发IZkDataListener
+        if (event.getType() == EventType.NodeDataChanged || event.getType() == EventType.NodeDeleted || event.getType() == EventType.NodeCreated) {
+            // 获取该节点的所有Listener
+            Set<IZkDataListener> listeners = _dataListener.get(path);
+            if (listeners != null && !listeners.isEmpty()) {
+                // 线程+阻塞队列的方式依次触发
+                fireDataChangedEvents(event.getPath(), listeners);
+            }
+        }
+
+        // 多说一句，当节点被创建、被删除时，会触发IZkChildListener和IZkDataListener
+    }
+
+    // 在ZkClient.connect时被创建
+    private ZkEventThread _eventThread;
+
+    // 当节点被创建、修改、删除
+    private void fireDataChangedEvents(final String path, Set<IZkDataListener> listeners) {
+        // 遍历该节点的所有Listener
+        for (final IZkDataListener listener : listeners) {
+            // 由Listener创建ZkEvent，放入ZkEventThread._events队列中，再由ZkEventThread线程消费
+            _eventThread.send(new ZkEvent("Data of " + path + " changed sent to " + listener) {
+
+                @Override
+                public void run() throws Exception {
+                    // 反复注册Watcher的实现点。
+                    // reinstall watch
+                    exists(path, true);
+                    try {
+                        Object data = readData(path, null, true);
+                        listener.handleDataChange(path, data);
+                    } catch (ZkNoNodeException e) {
+                        listener.handleDataDeleted(path);
+                    }
+                }
+            });
+        }
+    }
+
+    // 当该节点被创建、删除或者子节点数量发生变化
+    private void fireChildChangedEvents(final String path, Set<IZkChildListener> childListeners) {
+        try {
+            // 遍历该节点的所有Listener
+            // reinstall the watch
+            for (final IZkChildListener listener : childListeners) {
+                // 由Listener创建ZkEvent，放入ZkEventThread._events队列中，再由ZkEventThread线程消费
+                _eventThread.send(new ZkEvent("Children of " + path + " changed sent to " + listener) {
+
+                    @Override
+                    public void run() throws Exception {
+                        try {
+                            // 反复注册Watcher的实现点。
+                            // if the node doesn't exist we should listen for the root node to reappear
+                            exists(path);
+                            List<String> children = getChildren(path);
+                            listener.handleChildChange(path, children);
+                        } catch (ZkNoNodeException e) {
+                            listener.handleChildChange(path, null);
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            LOG.error("Failed to fire child changed event. Unable to getChildren.  ", e);
+        }
+    }
+}
+```
+``` java
+class ZkEventThread extends Thread {
+
+    // 其他代码略
+
+    // 队列
+    private BlockingQueue<ZkEvent> _events = new LinkedBlockingQueue<ZkEvent>();
+
+    @Override
+    public void run() {
+        LOG.info("Starting ZkClient event thread.");
+        try {
+            while (!isInterrupted()) {
+                ZkEvent zkEvent = _events.take();
+                int eventId = _eventId.incrementAndGet();
+                LOG.debug("Delivering event #" + eventId + " " + zkEvent);
+                try {
+                    zkEvent.run();
+                } catch (InterruptedException e) {
+                    interrupt();
+                } catch (ZkInterruptedException e) {
+                    interrupt();
+                } catch (Throwable e) {
+                    LOG.error("Error handling event " + zkEvent, e);
+                }
+                LOG.debug("Delivering event #" + eventId + " done");
+            }
+        } catch (InterruptedException e) {
+            LOG.info("Terminate ZkClient event thread.");
+        }
+    }
+
+    public void send(ZkEvent event) {
+        if (!isInterrupted()) {
+            LOG.debug("New event: " + event);
+            _events.add(event);
+        }
+    }
+}
+```
+
+## 5、总结
+
+1. 首先，实例化ZkClient对象时，通过ZkConnection指定Zookeeper的默认Watcher为ZkClient
+2. 其次，在`subscribeXxx`方法中，为某节点添加Listener，以及向服务器注册默认Watcher
+3. 最后，ZkClient实现Watcher接口，在`process`方法中触发Listener和Watcher的反复注册
