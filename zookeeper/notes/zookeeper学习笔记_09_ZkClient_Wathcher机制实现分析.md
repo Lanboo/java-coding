@@ -263,6 +263,7 @@ public class ZkClient implements Watcher {
         }
 
         // 多说一句，当节点被创建、被删除时，会触发IZkChildListener和IZkDataListener
+        // 可以看[zookeeper学习笔记_08_ZkClient的使用_Watcher事件.md]的章节4
     }
 
     // 在ZkClient.connect时被创建
