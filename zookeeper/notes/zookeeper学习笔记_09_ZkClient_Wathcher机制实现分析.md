@@ -149,6 +149,7 @@ public class ZkClient implements Watcher {
         retryUntilConnected(new Callable<Object>() {
             @Override
             public Object call() throws Exception {
+                // 注册Watcher
                 // 回调：调用ZkConnection，接着调用Zookeeper的exists方法
                 _connection.exists(path, true);
                 return null;
