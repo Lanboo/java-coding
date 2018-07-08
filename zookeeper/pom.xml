@@ -43,6 +43,11 @@
             <artifactId>curator-recipes</artifactId>
             <version>4.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-examples</artifactId>
+            <version>4.0.1</version>
+        </dependency>
 
         <!-- 序列化：Jackson -->
         <dependency>
