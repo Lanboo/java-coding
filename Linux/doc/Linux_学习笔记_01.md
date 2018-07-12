@@ -15,6 +15,7 @@
 :-|:-|:- 
 `mkdir dirName`|创建文件夹
 `tar -zxvf fileName`|解压`.tar.gz`文件|`-zxvf` 可以记成“至 小威风”
+`tar -zxvf fileName -C path`|解压`.tar.gz`文件到指定目录
 `rm -rf file`|递归删除文件或文件夹，<b>不可恢复</b>
 `ifconfg -a`|查看当前IP
 `ssh [-p port] userName@host`|ssh远程连接,之后输入密码|`ssh root@192.168.27.129`<br>`ssh -p 22 root@192.168.27.129`
