@@ -4,6 +4,7 @@
 > 为了查看日志方便，快速定位关键词。
 
 ``` shell
+> grep -l key fileName   // 判断fileName是否存在key这个关键字，fileName可以用*
 > vim xxx.log            // 打开某个文件
 > G 或者 shift g         // 翻页至最后一页（光标定位到最后一行）
 > ?key                   // 在当前文件中搜索key，并高亮显示
