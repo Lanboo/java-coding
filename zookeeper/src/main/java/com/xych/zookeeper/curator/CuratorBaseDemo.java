@@ -6,6 +6,8 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 
+import com.xych.zookeeper.constant.BaseConstants;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -17,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CuratorBaseDemo
 {
-    // 集群环境用,隔开
-    private static final String CONNECTSTRING = "192.168.27.133:2181";
     private static CuratorFramework curatorFramework;
 
     public static void main(String[] args) throws Exception
@@ -58,7 +58,7 @@ public class CuratorBaseDemo
     private static void connect()
     {
         curatorFramework = CuratorFrameworkFactory.builder() //
-            .connectString(CONNECTSTRING) //
+            .connectString(BaseConstants.CONNECT_STRING) //
             .sessionTimeoutMs(3000) //
             .namespace("XYCH") //
             .retryPolicy(new ExponentialBackoffRetry(1000, 3))//

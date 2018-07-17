@@ -6,6 +6,7 @@ import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
 import org.apache.zookeeper.CreateMode;
 
+import com.xych.zookeeper.constant.BaseConstants;
 import com.xych.zookeeper.zkclient.listener.ChildListener;
 import com.xych.zookeeper.zkclient.listener.DataListener;
 import com.xych.zookeeper.zkclient.listener.StateListener;
@@ -17,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ZKClientWatcherDemo
 {
-    // 集群环境用,隔开
-    public static final String CONNECTSTRING = "192.168.27.133:2181";
     private static ZkClient zkClient;
 
     public static void main(String[] args) throws IOException
@@ -86,7 +85,7 @@ public class ZKClientWatcherDemo
 
     private static void connect()
     {
-        zkClient = new ZkClient(new ZkConnection(CONNECTSTRING), 5000, new JacksonSerializer<User>(User.class));
+        zkClient = new ZkClient(new ZkConnection(BaseConstants.CONNECT_STRING), 5000, new JacksonSerializer<User>(User.class));
         log.info("建立连接");
     }
 }
