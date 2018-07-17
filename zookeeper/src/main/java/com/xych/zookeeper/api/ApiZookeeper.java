@@ -9,10 +9,10 @@ import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 
+import com.xych.zookeeper.constant.BaseConstants;
+
 public class ApiZookeeper
 {
-    // 集群环境用,隔开
-    private static final String CONNECTSTRING = "192.168.27.131:2181";
     private static ZooKeeper zookeeper;
 
     public static void main(String[] args) throws Exception
@@ -58,7 +58,7 @@ public class ApiZookeeper
     {
         // 使用CountDownLatch，使主线程等待
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        zookeeper = new ZooKeeper(CONNECTSTRING, 10000, new Watcher()
+        zookeeper = new ZooKeeper(BaseConstants.CONNECT_STRING, 10000, new Watcher()
         {
             @Override
             public void process(WatchedEvent event)

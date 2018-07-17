@@ -5,13 +5,12 @@ import org.I0Itec.zkclient.ZkConnection;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 
+import com.xych.zookeeper.constant.BaseConstants;
 import com.xych.zookeeper.zkclient.model.User;
 import com.xych.zookeeper.zkclient.serializer.JacksonSerializer;
 
 public class ZkClientDemo
 {
-    // 集群环境用,隔开
-    public static final String CONNECTSTRING = "192.168.27.133:2181";
     private static ZkClient zkClient;
 
     public static void main(String[] args)
@@ -102,18 +101,18 @@ public class ZkClientDemo
      */
     private static void connect()
     {
-        //zkClient = new ZkClient(CONNECTSTRING);
-        //zkClient = new ZkClient(CONNECTSTRING, 5000);
-        //zkClient = new ZkClient(new ZkConnection(CONNECTSTRING), 5000);
-        //zkClient = new ZkClient(new ZkConnection(CONNECTSTRING, 8000), 5000);
+        //zkClient = new ZkClient(BaseConstants.CONNECT_STRING);
+        //zkClient = new ZkClient(BaseConstants.CONNECT_STRING, 5000);
+        //zkClient = new ZkClient(new ZkConnection(BaseConstants.CONNECT_STRING), 5000);
+        //zkClient = new ZkClient(new ZkConnection(BaseConstants.CONNECT_STRING, 8000), 5000);
         /**
          * SerializableSerializer JDK序列化机制
          */
-        //zkClient = new ZkClient(new ZkConnection(CONNECTSTRING), 5000, new SerializableSerializer());
+        //zkClient = new ZkClient(new ZkConnection(BaseConstants.CONNECT_STRING), 5000, new SerializableSerializer());
         /**
          * JacksonSerializer 自定义的序列化方式（这里采用Jackson）
          */
-        zkClient = new ZkClient(new ZkConnection(CONNECTSTRING), 5000, new JacksonSerializer<User>(User.class));
+        zkClient = new ZkClient(new ZkConnection(BaseConstants.CONNECT_STRING), 5000, new JacksonSerializer<User>(User.class));
         System.out.println("建立连接");
     }
 }
