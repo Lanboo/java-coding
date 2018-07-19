@@ -1,4 +1,5 @@
 # 忽略maven项目中的target文件夹
+target
 */target
 
 # 忽略Eclipse相关文件
