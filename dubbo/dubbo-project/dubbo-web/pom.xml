@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.xych</groupId>
-            <artifactId>dubbo-code</artifactId>
+            <artifactId>dubbo-api</artifactId>
             <version>${dubbo.project.version}</version>
         </dependency>
         <dependency>

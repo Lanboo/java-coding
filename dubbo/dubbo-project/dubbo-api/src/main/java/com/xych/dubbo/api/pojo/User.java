@@ -1,4 +1,4 @@
-package com.xych.dubbo.code.pojo;
+package com.xych.dubbo.api.pojo;
 
 import lombok.Data;
 
