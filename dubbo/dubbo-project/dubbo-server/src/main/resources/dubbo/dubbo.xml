@@ -7,7 +7,7 @@
                            http://dubbo.apache.org/schema/dubbo
                            http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
                            
-    <dubbo:annotation name="dubbo-service" logger="slf4j"/>
+    <dubbo:application name="dubbo-service" logger="slf4j" />
     
 
 </beans>
