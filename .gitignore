@@ -7,6 +7,9 @@ target
 .project
 .settings
 
+# 忽略idea的相关文件
+.idea
+
 # Compiled class file
 *.class
 
