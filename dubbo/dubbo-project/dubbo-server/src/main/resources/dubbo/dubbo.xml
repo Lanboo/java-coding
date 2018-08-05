@@ -4,7 +4,7 @@
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
-                           http://code.alibabatech.com/schema/dubbo
+                           http://dubbo.apache.org/schema/dubbo
                            http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
                            
     <dubbo:annotation name="dubbo-service" logger="slf4j"/>
