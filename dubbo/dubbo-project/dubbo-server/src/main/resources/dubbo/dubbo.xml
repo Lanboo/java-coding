@@ -7,6 +7,7 @@
                            http://code.alibabatech.com/schema/dubbo
                            http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
                            
-    <dubbo:annotation name="dubbo-service" />
+    <dubbo:annotation name="dubbo-service" logger="slf4j"/>
+    
 
 </beans>
