@@ -108,5 +108,6 @@
         <module>dubbo-code</module>
         <module>dubbo-server</module>
         <module>dubbo-web</module>
+        <module>dubbo-api</module>
     </modules>
 </project>

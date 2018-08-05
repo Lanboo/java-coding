@@ -3,8 +3,8 @@ package com.xych.dubbo.server.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.xych.dubbo.code.pojo.User;
-import com.xych.dubbo.code.service.IUserService;
+import com.xych.dubbo.api.pojo.User;
+import com.xych.dubbo.api.service.IUserService;
 
 import lombok.extern.slf4j.Slf4j;
 
