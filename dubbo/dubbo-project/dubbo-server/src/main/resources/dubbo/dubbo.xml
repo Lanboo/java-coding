@@ -9,7 +9,7 @@
                            
     <dubbo:application name="dubbo-service" logger="slf4j" />
     
-    <dubbo:registry id="vm-lanboo" address="zookepper://192.168.27.31"/>
+    <dubbo:registry id="vm-lanboo" address="zookepper://192.168.27.133"/>
         
     <dubbo:protocol name="dubbo" port="20880" />
 </beans>
