@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Application
 {
-    private static String PATH = "dubbo/dubbb*.xml";
+    private static String PATH = "classpath:dubbo/dubbo*.xml";
 
     public static void main(String[] args) throws Exception
     {
