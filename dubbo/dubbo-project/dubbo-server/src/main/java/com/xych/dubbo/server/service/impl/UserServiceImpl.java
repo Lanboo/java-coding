@@ -25,7 +25,7 @@ public class UserServiceImpl implements IUserService
     @Override
     public User findOne(String id)
     {
-        log.info("假装这里有一个人");
+        log.info("假装这里有一个人：id={}", id);
         return new User(id, "xych");
     }
 }
