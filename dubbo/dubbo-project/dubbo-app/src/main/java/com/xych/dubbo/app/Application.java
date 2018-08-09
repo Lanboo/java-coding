@@ -1,4 +1,4 @@
-package com.xych.dubbo.web;
+package com.xych.dubbo.app;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
