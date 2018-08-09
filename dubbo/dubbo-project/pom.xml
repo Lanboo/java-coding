@@ -117,9 +117,10 @@
 
     <modules>
         <module>dubbo-common</module>
-        <module>dubbo-code</module>
+        
         <module>dubbo-server</module>
-        <module>dubbo-web</module>
+        
         <module>dubbo-api</module>
+        <module>dubbo-app</module>
     </modules>
 </project>
