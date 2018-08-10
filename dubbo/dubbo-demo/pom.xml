@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.xych</groupId>
-    <artifactId>dubbo-project</artifactId>
+    <artifactId>dubbo-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dubbo.project.version>0.0.1-SNAPSHOT</dubbo.project.version>
+        <dubbo.demo.version>0.0.1-SNAPSHOT</dubbo.demo.version>
     </properties>
 
     <dependencies>
@@ -116,10 +116,7 @@
 
 
     <modules>
-        <module>dubbo-common</module>
-        
         <module>dubbo-server</module>
-        
         <module>dubbo-api</module>
         <module>dubbo-app</module>
     </modules>
