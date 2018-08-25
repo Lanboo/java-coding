@@ -30,3 +30,159 @@ public class MySQLConnect
 以上代码并没有声明MySql的数据库连接驱动<br>
 但是在基于SPI的模式中，已经声明了。
 ![](https://github.com/Lanboo/resource/blob/master/images/java-coding/dubbo/jdk-spi-jdbc-mysql.png?raw=true)
+
+现在看看`DriverManager`这个类(基于JDk8)
+``` java
+public class DriverManager {
+    static {
+        loadInitialDrivers();
+        println("JDBC DriverManager initialized");
+    }
+
+    // 1、先看看在系统参数里是不是指定了加载类
+    // 2、在使用ServiceLoader工具类来加载Driver的实现类
+    private static void loadInitialDrivers() {
+        String drivers;
+        try {
+            drivers = AccessController.doPrivileged(new PrivilegedAction<String>() {
+                public String run() {
+                    return System.getProperty("jdbc.drivers");
+                }
+            });
+        } catch (Exception ex) {
+            drivers = null;
+        }
+
+        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+            public Void run() {
+
+                ServiceLoader<Driver> loadedDrivers = ServiceLoader.load(Driver.class);
+                Iterator<Driver> driversIterator = loadedDrivers.iterator();
+                
+                try{
+                    while(driversIterator.hasNext()) {
+                        driversIterator.next();
+                    }
+                } catch(Throwable t) {
+                // Do nothing
+                }
+                return null;
+            }
+        });
+
+        println("DriverManager.initialize: jdbc.drivers = " + drivers);
+
+        if (drivers == null || drivers.equals("")) {
+            return;
+        }
+        String[] driversList = drivers.split(":");
+        println("number of Drivers:" + driversList.length);
+        for (String aDriver : driversList) {
+            try {
+                println("DriverManager.Initialize: loading " + aDriver);
+                // 在这里去加载驱动类
+                Class.forName(aDriver, true,
+                        ClassLoader.getSystemClassLoader());
+            } catch (Exception ex) {
+                println("DriverManager.Initialize: load failed: " + ex);
+            }
+        }
+    }
+}
+```
+
+## 3、Demo
+![](https://github.com/Lanboo/resource/blob/master/images/java-coding/dubbo/jdk-spi-demo.png?raw=true)
+### 3.1、接口定义
+``` java
+package com.xych.spi.jdk.api;
+
+public interface IXychDriver
+{
+    public void connection(String path);
+}
+```
+
+### 3.2、实现方式1
+``` java
+package com.xych.spi.jdk.mysql;
+
+import com.xych.spi.jdk.api.IXychDriver;
+
+public class MySqlDriver implements IXychDriver
+{
+    @Override
+    public void connection(String path)
+    {
+        System.out.println("MySQL impl:path=" + path);
+    }
+}
+```
+### 3.3、实现方式2
+``` java
+package com.xych.spi.jdk.oracle;
+
+import com.xych.spi.jdk.api.IXychDriver;
+
+public class OracleDriver implements IXychDriver
+{
+    @Override
+    public void connection(String path)
+    {
+        System.out.println("Oracle impl:path=" + path);
+    }
+}
+```
+### 3.4、使用
+``` pom
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xych</groupId>
+    <artifactId>spi-jdk-server</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>spi-jdk-server</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.xych</groupId>
+            <artifactId>spi-jdk-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xych</groupId>
+            <artifactId>spi-jdk-mysql</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
+```
+``` java
+package com.xych.spi.jdk.server;
+
+import java.util.ServiceLoader;
+
+import com.xych.spi.jdk.api.IXychDriver;
+
+public class App
+{
+    public static void main(String[] args)
+    {
+        ServiceLoader<IXychDriver> serviceLoader = ServiceLoader.load(IXychDriver.class);
+        for(IXychDriver xychDriver : serviceLoader)
+        {
+            xychDriver.connection("xych");
+        }
+    }
+}
+/* 运行结果
+MySQL impl:path=xych
+*/
+```
