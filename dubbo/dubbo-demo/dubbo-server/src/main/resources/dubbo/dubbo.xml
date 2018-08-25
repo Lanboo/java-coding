@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://dubbo.apache.org/schema/dubbo" xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://dubbo.apache.org/schema/dubbo
                            http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
@@ -13,8 +10,8 @@
 
     <!-- 使用zookeeper广播注册中心暴露服务地址 -->
     <!-- <dubbo:registry id="vm-lanboo" address="zookeeper://192.168.27.133:2181"/> -->
-    <!-- <dubbo:registry id="vm-lanboo" protocol="zookeeper" address="192.168.27.133:2181" /> -->
-    <dubbo:registry id="vm-lanboo" protocol="zookeeper" address="47.98.196.24:2181" />
+    <dubbo:registry id="vm-lanboo" protocol="zookeeper" address="192.168.27.133:2181" />
+    <!-- <dubbo:registry id="vm-lanboo" protocol="zookeeper" address="47.98.196.24:2181" /> -->
 
     <!-- 用dubbo协议在20880端口暴露服务 -->
     <dubbo:protocol name="dubbo" port="20880" />
