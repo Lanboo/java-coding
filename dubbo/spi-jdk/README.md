@@ -103,7 +103,7 @@ public interface IXychDriver
 }
 ```
 
-### 3.2、实现方式1
+### 3.2、实现方式1-MySQL
 ``` java
 package com.xych.spi.jdk.mysql;
 
@@ -118,7 +118,7 @@ public class MySqlDriver implements IXychDriver
     }
 }
 ```
-### 3.3、实现方式2
+### 3.3、实现方式2-Oracle
 ``` java
 package com.xych.spi.jdk.oracle;
 
