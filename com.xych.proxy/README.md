@@ -233,7 +233,7 @@ proxyDaoA.save();
 
 这里画一下类图吧。
 
-![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-1.png?raw=true)
+![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/java-coding/proxy/proxy-jdk-1.png?raw=true)
 
 
 
@@ -329,12 +329,12 @@ IDao的B实现类：修改了一个Pojo
 
 ### 3、代理出的类到底是什么？
 #### 3.1、JDK动态代理
-![JDK-proxyDaoA](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-calss-a.png?raw=true) ![JDK-proxyDaoB](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-calss-b.png?raw=true)
+![JDK-proxyDaoA](https://github.com/Lanboo/resource/blob/master/images/java-coding/proxy/proxy-jdk-calss-a.png?raw=true) ![JDK-proxyDaoB](https://github.com/Lanboo/resource/blob/master/images/java-coding/proxy/proxy-jdk-calss-b.png?raw=true)
 
 留意下图中的h变量，等下讲
 
 #### 3.2、Cglib动态代理
-![Cglib-proxyDaoA](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-cglib-calss-a.png?raw=true) ![Cglib-proxyDaoB](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-cglib-calss-b.png?raw=true)
+![Cglib-proxyDaoA](https://github.com/Lanboo/resource/blob/master/images/java-coding/proxy/proxy-cglib-calss-a.png?raw=true) ![Cglib-proxyDaoB](https://github.com/Lanboo/resource/blob/master/images/java-coding/proxy/proxy-cglib-calss-b.png?raw=true)
 
 #### 3.3、使用总结
 
@@ -561,11 +561,11 @@ fileManager.close();
 
 从2.1可以知道，在本文中，JDK代理的类图是下面的样子。
 
-![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-1.png?raw=true)
+![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/java-coding/proxy/proxy-jdk-1.png?raw=true)
 
 另外，JDK动态代理的类图还有一种形式,（比如MyBatis中Mapper的代理）
 
-![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-2.png?raw=true)
+![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/java-coding/proxy/proxy-jdk-2.png?raw=true)
 
 我们在来看一下JdkProxy这个类
 ``` java
@@ -630,7 +630,7 @@ public class JdkProxy implements InvocationHandler
 
 再来看第二种类图：
 
-![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/proxy-jdk-2.png?raw=true)
+![proxy-jdk-1](https://github.com/Lanboo/resource/blob/master/images/java-coding/proxy/proxy-jdk-2.png?raw=true)
 
 如果JdkProxy中传入的target跟IDao没有实现关系，在那在`1处`我们应该想办法接着调用。
 
