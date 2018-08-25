@@ -7,7 +7,7 @@
 > 2. Watcher是怎么反复注册的？
 
 ## 1、ZKClient与Zookeeper的类图
-![](https://github.com/Lanboo/resource/blob/master/images/JavaCoding/Zookeeper-ZkClient-1.png?raw=true)
+![](https://github.com/Lanboo/resource/blob/master/images/java-coding/zookeeper/Zookeeper-ZkClient-1.png?raw=true)
 
 ## 2、ZkClinet初始化
 ``` java
