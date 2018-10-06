@@ -7,7 +7,7 @@
                            http://dubbo.apache.org/schema/dubbo
                            http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
                            
-    <dubbo:service ref="userService" interface="com.xych.dubbo.api.service.IUserService"/>
+    <dubbo:service ref="userService" interface="com.xych.dubbo.api.service.IUserService" />
 
     
     <bean id="userService" class="com.xych.dubbo.server.service.impl.UserServiceImpl"/>
