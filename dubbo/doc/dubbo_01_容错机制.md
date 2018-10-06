@@ -1,5 +1,7 @@
 [toc]
 # dubbo容错机制
+转自：[Dubbo服务集群容错配置（四）](https://blog.csdn.net/u014401141/article/details/71307820)
+
 ## 1、dubbo配置
 ``` xml
 <dubbo:service cluster="failover" />
@@ -41,3 +43,6 @@
 >- 可通过forks="2"来设置最大并行数。
 
 >- 浪费资源。
+
+## 3、总
+![](https://raw.githubusercontent.com/Lanboo/resource/master/images/java-coding/dubbo/dubbo-01-%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%94%99.jpg)
