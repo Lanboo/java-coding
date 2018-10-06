@@ -7,6 +7,6 @@
                            http://dubbo.apache.org/schema/dubbo
                            http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
                            
-    <dubbo:reference id="userService" interface="com.xych.dubbo.api.service.IUserService"></dubbo:reference>
+    <dubbo:reference id="userService" interface="com.xych.dubbo.api.service.IUserService" />
     
 </beans>
