@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.xych.lock.redis.autoconfigure.aspect.DistributedLockAspect
