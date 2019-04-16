@@ -14,3 +14,6 @@
 
 #### Dubbo
 [学习Dubbo](https://github.com/Lanboo/JavaCoding/tree/master/dubbo)
+
+#### 分布式锁-Redis实现
+99%的部分参考：[spring boot redis分布式锁](https://my.oschina.net/dengfuwei/blog/1600681)
