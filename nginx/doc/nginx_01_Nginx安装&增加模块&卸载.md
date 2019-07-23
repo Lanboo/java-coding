@@ -74,12 +74,10 @@
 > ./configure --prefix=/root/nginx/nginx-1.16.0 --with-http_ssl_module --with-http_v2_module
 > # 只编译（不能安装，否则安装目录下的配置都会被覆盖）
 > make
-> ```
-## 2.4、复制`nginx`至安装目录
-> ``` shell
+> # 复制`nginx`至安装目录
 > cp /root/nginx/nginx-1.16.0-build/objs/nginx /root/nginx/nginx-1.16.0/sbin
 > ```
-## 2.5、重启
+## 2.4、重启
 > 不能重新加载配置，要重启
 
 > ``` shell
