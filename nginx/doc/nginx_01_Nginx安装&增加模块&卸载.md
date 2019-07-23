@@ -98,7 +98,7 @@
 > # 停止Nginx
 > ./root/nginx/nginx-1.16.0/sbin/nginx -s stop
 > # 根目录搜索
-> sudo find / -name nginx*
+> sudo find / -name nginx
 > # rm -rf 依次删除即可
 > rm -rf 
 > ```
