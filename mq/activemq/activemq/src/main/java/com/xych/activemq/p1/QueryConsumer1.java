@@ -10,7 +10,7 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-public class QueryConsumer {
+public class QueryConsumer1 {
     public static void main(String[] args) {
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616");
         Connection connection = null;
@@ -24,12 +24,14 @@ public class QueryConsumer {
             Destination destination = session.createQueue("xych-test-query");
             // 消息消费者
             MessageConsumer messageConsumer = session.createConsumer(destination);
-            // 阻塞式接收消息
-            TextMessage message = (TextMessage) messageConsumer.receive();
-            System.out.println(message.getText());
-            session.commit();
-            session.close();
-            connection.close();
+            while(true) {
+                // 阻塞式接收消息
+                TextMessage message = (TextMessage) messageConsumer.receive();
+                System.out.println("QueryConsumer1：" + message.getText());
+            }
+            //session.commit();
+            //session.close();
+            // connection.close();
         }
         catch(JMSException e) {
             e.printStackTrace();
