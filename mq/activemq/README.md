@@ -12,3 +12,7 @@
 
 ### 3、ActiveMQ简单示例
 - [ActiveMQ简单示例](doc/activemq_03_ActiveMQ简单示例.md)
+
+
+### 4、ActiveMQ事务&消息确认&持久化
+- [ActiveMQ事务&消息确认&持久化](doc/activemq_04_ActiveMQ事务&消息确认&持久化.md)
