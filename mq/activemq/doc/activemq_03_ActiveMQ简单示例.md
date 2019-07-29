@@ -15,7 +15,7 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-public class QueryProducer {
+public class QueueProducer {
     public static void main(String[] args) {
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616");
         Connection connection = null;
@@ -26,7 +26,7 @@ public class QueryProducer {
             // 会话
             Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
             // 目的地
-            Destination destination = session.createQueue("xych-test-query");
+            Destination destination = session.createQueue("xych-test-queue");
             // 消息发送者
             MessageProducer messageProducer = session.createProducer(destination);
             // 创建消息
@@ -55,7 +55,7 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-public class QueryConsumer1 {
+public class QueueConsumer1 {
     public static void main(String[] args) {
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616");
         Connection connection = null;
@@ -66,13 +66,13 @@ public class QueryConsumer1 {
             // 会话
             Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
             // 目的地
-            Destination destination = session.createQueue("xych-test-query");
+            Destination destination = session.createQueue("xych-test-queue");
             // 消息消费者
             MessageConsumer messageConsumer = session.createConsumer(destination);
             while(true) {
                 // 阻塞式接收消息
                 TextMessage message = (TextMessage) messageConsumer.receive();
-                System.out.println("QueryConsumer1：" + message.getText());
+                System.out.println("QueueConsumer1：" + message.getText());
             }
             //session.commit();
             //session.close();
