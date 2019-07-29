@@ -21,7 +21,7 @@ public class QueueConsumer1 {
             // 会话
             Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
             // 目的地
-            Destination destination = session.createQueue("xych-test-query");
+            Destination destination = session.createQueue("xych-test-queue");
             // 消息消费者
             MessageConsumer messageConsumer = session.createConsumer(destination);
             while(true) {
