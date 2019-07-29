@@ -21,7 +21,7 @@ public class QueueProducer {
             // 会话
             Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
             // 目的地
-            Destination destination = session.createQueue("xych-test-query");
+            Destination destination = session.createQueue("xych-test-queue");
             // 消息发送者
             MessageProducer messageProducer = session.createProducer(destination);
             // 创建消息
