@@ -20,4 +20,4 @@
 - [ActiveMQ消息的同步发送和异步发送](doc/activemq_05_ActiveMQ消息的同步发送和异步发送.md)
 
 ### 6、ActiveMQ消息发送源码分析
-- [ActiveMQ消息发送源码分析](doc/activemq_05_ActiveMQ消息发送源码分析.md)
+- [ActiveMQ消息发送源码分析](doc/activemq_06_ActiveMQ消息发送源码分析.md)
