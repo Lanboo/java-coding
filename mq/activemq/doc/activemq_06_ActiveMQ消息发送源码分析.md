@@ -160,7 +160,7 @@ public class QueueProducer {
         }
     }
     ```
-7. `this.transport`的创建（链式）
+7. ➜ `this.transport`的创建（链式）
     > 得到：ResponseCorrelator(MutexTransport(WireFormatNegotiator(InactivityMonitor(TcpTransport))))
 
     ``` java
@@ -246,7 +246,7 @@ public class QueueProducer {
         }
         ```
 
-8. `this.transport.oneway(command)`
+8. ➜ `this.transport.oneway(command)`
     > transport = ResponseCorrelator(MutexTransport(WireFormatNegotiator(InactivityMonitor(TcpTransport)))) <br>
     >- ResponseCorrelator：用于实现异步请求<br>
     >- MutexTransport：实现写锁，表示同一时间只允许发送一个请求<br>
@@ -254,4 +254,180 @@ public class QueueProducer {
     >- InactivityMonitor：用于实现连接成功成功后的心跳检查机制，客户端每10s发送一次心跳信息。服务端每30s读取一次心跳信息。<br>
     >- TcpTransport：JDK Socket连接发送消息<br>
 
+## 3、同步发送
+``` java
+public class QueueProducer {
+    public static void main(String[] args) {
+        // 开通同步发送
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616?jms.alwaysSyncSend=true");
+        Connection connection = null;
+        try {
+            // 连接
+            connection = connectionFactory.createConnection();
+            connection.start();
+            // 会话
+            Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+            // 目的地
+            Destination destination = session.createQueue("xych-test-queue");
+            // 消息发送者
+            ActiveMQMessageProducer producer = (ActiveMQMessageProducer) session.createProducer(destination);
+            // 创建消息
+            TextMessage message = session.createTextMessage("Hello World!");
+            // 发送消息
+            // producer.setSendTimeout(5000);
+            // producer.send(message); // 分支1
+            // 分支2
+            producer.send(message, new AsyncCallback() {
+                @Override
+                public void onException(JMSException exception) {
+                    System.out.println(exception);
+                }
+
+                @Override
+                public void onSuccess() {
+                    System.out.println("send Success");
+                }
+            });
+            session.commit();
+            session.close();
+            connection.close();
+        }
+        catch(JMSException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 3.1、同步发送的实现：异步发送后阻塞，等待中间件返回ACK
+> 上面`步骤5`的源码如下：
+
+> ``` java
+> // org.apache.activemq.ActiveMQSession
+> protected void send(ActiveMQMessageProducer producer, ActiveMQDestination destination, Message message, int  deliveryMode, int priority, long timeToLive, MemoryUsage producerWindow, int sendTimeout, AsyncCallback > onComplete) throws JMSException { 
+>     ...
+>     synchronized (sendMutex) {
+>         // 如果是事务模式，开启事务
+>         doStartTransaction();
+> 
+>         ...
+>         // 异步发送
+>         if (...) {
+>         }
+>         // 同步发送
+>         else {
+>             if (sendTimeout > 0 && onComplete==null) {
+>                 // 分支1
+>                 this.connection.syncSendPacket(msg,sendTimeout);
+>             }else {
+>                 // 分支2
+>                 this.connection.syncSendPacket(msg, onComplete);
+>             }
+>         }
+>     }
+> }
+> ```
+
+9. ➜ 异步转同步
+    ``` java
+    // org.apache.activemq.ActiveMQConnection
+
+    // 分支1
+    public Response syncSendPacket(Command command, int timeout) throws JMSException {
+        if (isClosed()) {
+            throw new ConnectionClosedException();
+        } else {
+            Response response = (Response)(timeout > 0
+                        ? this.transport.request(command, timeout)
+                        : this.transport.request(command));
+            ...
+
+            return response;
+        }
+    }
+
+    // 分支2
+    public void syncSendPacket(final Command command, final AsyncCallback onComplete) throws JMSException {
+
+        ...
+        this.transport.asyncRequest(command, new ResponseCallback() {
+            @Override
+            public void onCompletion(FutureResponse resp) {
+                Response response;
+                Throwable exception = null;
+                try {
+                    response = resp.getResult();
+                    if (response.isException()) {
+                        ExceptionResponse er = (ExceptionResponse)response;
+                        exception = er.getException();
+                    }
+                } catch (Exception e) {
+                    exception = e;
+                }
+                if (exception != null) {
+                    if ( exception instanceof JMSException) {
+                        onComplete.onException((JMSException) exception);
+                    } else {
+                        ...
+                    }
+                }else {
+                    onComplete.onSuccess();
+                }
+            }
+        });
+    }
+    ```
+10. ➜ ResponseCorrelator
+    > transport = ResponseCorrelator(MutexTransport(WireFormatNegotiator(InactivityMonitor(TcpTransport)))) <br>
+    > 具体查看 `步骤7` & `步骤8`
+
+    ``` java
+    // org.apache.activemq.transport.ResponseCorrelator
+
+    // 分支2
+    public FutureResponse asyncRequest(Object o, ResponseCallback responseCallback) throws IOException {
+        Command command = (Command) o;
+        command.setCommandId(sequenceGenerator.getNextSequenceId());
+        command.setResponseRequired(true);
+        // 构建FutureResponse
+        FutureResponse future = new FutureResponse(responseCallback, this);
+        IOException priorError = null;
+        synchronized (requestMap) {
+            priorError = this.error;
+            if (priorError == null) {
+                // 放入Map中，中间通知后，以备回调
+                requestMap.put(new Integer(command.getCommandId()), future);
+            }
+        }
+
+        if (priorError != null) {
+            future.set(new ExceptionResponse(priorError));
+            throw priorError;
+        }
+
+        // 调用下级 transport
+        next.oneway(command);
+        return future;
+    }
+
+    // 分支1
+    public Object request(Object command) throws IOException {
+        FutureResponse response = asyncRequest(command, null);
+        // 阻塞
+        return response.getResult();
+    }
+
+    // 分支1
+    public Object request(Object command, int timeout) throws IOException {
+        FutureResponse response = asyncRequest(command, null);
+        // 阻塞
+        return response.getResult(timeout);
+    }
+    ```
+
+11. ➜ 分支2的AsyncCallback#onSuccess什么时候调用
+> 首先在`步骤7`知道 <br>
+> transport = ResponseCorrelator(MutexTransport(WireFormatNegotiator(InactivityMonitor(TcpTransport))))
+
+对于`TcpTransport`，实现Runnable，run方法中，不停的接收ActiveMQ的ACK，之后调用`TransportListener#onCommand`,最后调用`ResponseCorrelator#onCommand`，然后调用`AsyncCallback#onSuccess`
 
