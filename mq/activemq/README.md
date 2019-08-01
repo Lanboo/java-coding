@@ -21,3 +21,6 @@
 
 ### 6、ActiveMQ消息发送源码分析
 - [ActiveMQ消息发送源码分析](doc/activemq_06_ActiveMQ消息发送源码分析.md)
+
+### 7、ActiveMQ持久化策略
+- [ActiveMQ持久化策略](doc/activemq_07_ActiveMQ持久化策略.md)
