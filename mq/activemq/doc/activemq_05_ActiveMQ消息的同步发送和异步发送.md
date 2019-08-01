@@ -16,7 +16,16 @@
 >- ps.1：默认情况下，消息是持久化的。
 >- ps.2：由于异步发送效率比同步发送高，持久化消息尽量开始事务。
 
-### 开启异步发送
+### 开启同步发送(优先级高)
+``` java
+ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616?jms.alwaysSyncSend=true");
+
+((ActiveMQConnectionFactory) connectionFactory).setAlwaysSyncSend(true);
+
+((ActiveMQConnection) connection).setAlwaysSyncSend(true);
+```
+
+### 开启异步发送(优先级低)
 ``` java 
 ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0.0.1:61616?jms.useAsyncSend=true");
 
@@ -24,4 +33,6 @@ ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://127.0
 
 ((ActiveMQConnection) connection).setUseAsyncSend(true);
 ```
+
+
 
