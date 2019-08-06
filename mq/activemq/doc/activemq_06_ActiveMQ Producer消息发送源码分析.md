@@ -1,6 +1,6 @@
 [toc]
 
-# ActiveMQ消息发送源码分析
+# ActiveMQ Producer消息发送源码分析
 
 很有帮助的一篇文章：[ActiveMQ中Producer特性详解](https://shift-alt-ctrl.iteye.com/blog/2034440)
 
