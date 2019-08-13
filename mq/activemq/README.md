@@ -24,3 +24,6 @@
 
 ### 7、ActiveMQ持久化策略
 - [ActiveMQ持久化策略](doc/activemq_07_ActiveMQ持久化策略.md)
+
+### 8、ActiveMQ消息传送机制以及ACK机制详解
+- [ActiveMQ消息传送机制以及ACK机制详解](doc/activemq_08_ActiveMQ消息传送机制以及ACK机制详解.md)
