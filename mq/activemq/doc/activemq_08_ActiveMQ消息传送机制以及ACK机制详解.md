@@ -180,22 +180,29 @@ MessageAck.`EXPIRED_ACK_TYPE`:6|消息过期。
 -  这也意味着，当consumer故障重启后，那些尚未ACK的消息会重新发送过来。
 
 ### 4.4、SESSION_TRANSACTED下的ACK
+> 事务模式。<br>
+> session.commit()之前，所有消费的消息，要么全部正常确认，要么全部redelivery。<br>
+> 在SESSION_TRANSACTED模式下，optimizeACK并不能发挥任何效果,因为在此模式下，optimizeACK会被强制设定为false，不过prefetch仍然可以决定DELIVERED_ACK_TYPE的发送时机。<br>
 
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
-> <br>
+> 因为Session非线程安全，那么当前session下所有的consumer都会共享同一个transactionContext；同时建议，一个事务类型的Session中只有一个Consumer，以避免rollback()或者commit()方法被多个consumer调用而造成的消息混乱。<br>
+
+> 当consumer接受到消息之后，首先检测TransactionContext是否已经开启，如果没有，就会开启并生成新的transactionId，并把信息发送给broker；此后将检测事务中已经消费的消息个数是否 >= `prefetch * 0.5`,如果大于则补充发送一个`DELIVERED_ACK_TYPE`的确认指令；这时就开始调用onMessage()方法，如果是同步(receive),那么即返回message。上述过程，和其他确认模式没有任何特殊的地方。<br>
+
+> 当开发者决定事务可以提交时，必须调用session.commit()方法，commit方法将会导致当前session的事务中所有消息立即被确认；<br>
+> 事务的确认过程中，
+>- 首先把本地的`deliveredMessage`队列中尚未确认的消息全部确认(`STANDARD_ACK_TYPE`)；
+>- 此后向broker发送transaction提交指令并等待broker反馈，
+>   - 如果broker端事务操作成功，那么将会把本地`deliveredMessage`队列清空，新的事务开始；
+>   - 如果broker端事务操作失败(此时broker已经rollback)，那么对于session而言，将执行`inner-rollback`，这个rollback所做的事情，就是将当前事务中的消息清空并要求broker重发(`REDELIVERED_ACK_TYPE`),同时commit方法将抛出异常。<br>
+
+> 当session.commit方法异常时，对于开发者而言通常是调用session.rollback()回滚事务(事实上开发者不调用也没有问题)。<br>
+> 当然你可以在事务开始之后的任何时机调用rollback()，rollback意味着当前事务的结束，事务中所有的消息都将被重发。<br>
+
+> 需要注意，无论是inner-rollback还是调用session.rollback()而导致消息重发，都会导致`message.redeliveryCounter`计数器增加，最终都会受限于brokerUrl中配置的`jms.redeliveryPolicy.maximumRedeliveries`，如果rollback的次数过多，而达到重发次数的上限时，消息将会被DLQ(dead letter)。<br>
+
+### 4.5、INDIVIDUAL_ACKNOWLEDGE下的ACK
+> 单条消息主动确认<br>
+> 这种确认模式，我们很少使用。<br>
+
+> 确认时机和`CLIENT_ACKNOWLEDGE`几乎一样<br>
+> 当消息消费成功之后，需要调用`message.acknowledege`来确认此消息（<b>单条</b>），而CLIENT_ACKNOWLEDGE模式`message.acknowledge()`方法将导致整个session中所有消息被确认（<b>批量确认</b>）。<br>
