@@ -46,8 +46,58 @@ PS：节点较多时，连接会失败，学习时使用即可。
     sh kafka-topics.sh --list --bootstrap-server localhost:9092
     ```
 - 发送消息
-    > PS：
+    > PS：会开启一个新的进程，是一个生产者的客户端。`jps`命令，会显示`ConsoleProducer`
+    ``` shell
+    > sh kafka-console-producer.sh --broker-list localhost:9092 --topic test
+    This is a message
+    This is another message
+    ```
 - 接收消息
-
-
+    > PS：会开启一个新的进程，是一个消费者的客户端。`jps`命令，会显示`ConsoleConsumer`
+    ``` shell
+    > sh kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+    This is a message
+    This is another message
+    ```
 ## 3、集群安装
+### 3.1、伪集群（port不一致）
+``` shell
+config/server.properties:
+    broker.id=0
+    listeners=PLAINTEXT://:9092
+    log.dirs=/tmp/kafka-logs
+
+config/server-1.properties:
+    broker.id=1
+    listeners=PLAINTEXT://:9093
+    log.dirs=/tmp/kafka-logs-1
+
+config/server-2.properties:
+    broker.id=2
+    listeners=PLAINTEXT://:9094
+    log.dirs=/tmp/kafka-logs-2
+```
+
+``` shell
+sh kafka-server-start.sh ../config/server.properties
+sh kafka-server-start.sh ../config/server-1.properties
+sh kafka-server-start.sh ../config/server-2.properties
+```
+
+### 3.2、集群（IP不一致）
+``` shell
+config/server.properties:
+    broker.id=0
+    listeners=PLAINTEXT://192.168.0.5:9092
+    zookeeper.connect=192.168.0.4:2181
+
+config/server-1.properties:
+    broker.id=1
+    listeners=PLAINTEXT://192.168.0.6:9092
+    zookeeper.connect=192.168.0.4:2181
+
+config/server-2.properties:
+    broker.id=2
+    listeners=PLAINTEXT://192.168.0.7:9092
+    zookeeper.connect=192.168.0.4:2181
+```
