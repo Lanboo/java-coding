@@ -86,17 +86,17 @@ sh kafka-server-start.sh ../config/server-2.properties
 
 ### 3.2、集群（IP不一致）
 ``` shell
-config/server.properties:
+192.168.0.5：server.properties:
     broker.id=0
     listeners=PLAINTEXT://192.168.0.5:9092
     zookeeper.connect=192.168.0.4:2181
 
-config/server-1.properties:
+192.168.0.6：server.properties:
     broker.id=1
     listeners=PLAINTEXT://192.168.0.6:9092
     zookeeper.connect=192.168.0.4:2181
 
-config/server-2.properties:
+192.168.0.7：server.properties:
     broker.id=2
     listeners=PLAINTEXT://192.168.0.7:9092
     zookeeper.connect=192.168.0.4:2181
