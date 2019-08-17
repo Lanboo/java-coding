@@ -23,11 +23,12 @@ public class KafkaConsumerDemo implements Runnable {
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "www.xych.online:9092");
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, this.getClass().getSimpleName());
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
-        // Key 的序列化方式
+        // Key 的反序列化方式
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class.getName());
-        // Value 的序列化方式
+        // Value 的反序列化方式
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         this.kafkaConsumer = new KafkaConsumer<>(properties);
+        // 订阅
         this.kafkaConsumer.subscribe(Collections.singleton(topic));
     }
 
