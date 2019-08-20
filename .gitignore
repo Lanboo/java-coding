@@ -8,6 +8,9 @@ target
 .settings
 .factorypath
 
+# 忽略VS Code产生的文件夹
+.apt_generated*
+
 # 忽略idea的相关文件
 .idea
 
