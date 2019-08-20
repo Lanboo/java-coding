@@ -6,6 +6,7 @@ target
 .classpath
 .project
 .settings
+.factorypath
 
 # 忽略idea的相关文件
 .idea
