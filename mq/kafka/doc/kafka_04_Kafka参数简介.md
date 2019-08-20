@@ -24,7 +24,7 @@ public static final String BATCH_SIZE_CONFIG = "batch.size";
 ```
 > 通过改参数，控制提交消息的时机。<br>
 
-> 生产者发送多个消息到Broker上用一个分区时，为减少网络请求带来的性能开销，生产者会通过批量的方式来提交消息。
+> 生产者发送多个消息到Broker上的一个分区时，为减少网络请求带来的性能开销，生产者会通过批量的方式来提交消息。
 
 > 当未提交的消息总大小达到`batch.size`参数值的时候，触发一次提交。
 
@@ -51,7 +51,7 @@ public static final String MAX_REQUEST_SIZE_CONFIG = "max.request.size";
 ```
 > 批量提交时，消息总大小的上限。
 
-> 避免单词请求，请求内容过大，从而影响吞吐量。
+> 避免单次请求，请求内容过大，从而影响吞吐量。
 
 > 默认值：`1048576`，即1M
 
@@ -103,7 +103,7 @@ public static final String AUTO_OFFSET_RESET_CONFIG = "auto.offset.reset";
 > 某个`Topic`的`Partition`下，是递增的。
 
 > 当`Producer`端发送消息至Kafka集群时，该消息必定会被分发到某个`Partition`下，同时会获得在该`partition`下的`offset`值。<br>
-> Kafka的每个节点会维护offset的值，用来表示`Consumer Group`在当前`Partition`下已经消费了多少消息。记录的维度：`GroupId + GroupId`
+> Kafka的每个节点会维护offset的值，用来表示`Consumer Group`在当前`Partition`下已经消费了多少消息。记录的维度：`GroupId + Topic`
 
 
 <div style = "font-size:13px;">
