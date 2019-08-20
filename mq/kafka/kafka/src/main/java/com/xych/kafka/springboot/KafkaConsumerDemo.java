@@ -9,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class KafkaConsumerDemo {
-    @KafkaListener(topics = {"test"})
+    @KafkaListener(topics = { "test" })
     public void listen(ConsumerRecord<Integer, String> record) throws Exception {
-        System.out.printf("topic=%s,offset=%d,value=%s\n", record.topic(), record.offset(), record.value());
-        log.info("topic={},offset={},value={}", record.topic(), record.offset(), record.value());
+        // System.out.printf("topic=%s,offset=%d,value=%s\n", record.topic(), record.offset(), record.value());
+        log.info("Consumer:topic={},value={},offset={}", record.topic(), record.value(), record.offset());
     }
 }
