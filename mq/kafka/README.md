@@ -27,3 +27,6 @@
 
 ### 5、SpringBoot集成Kafka
 [SpringBoot集成Kafka](doc/kafka_05_SpringBoot集成Kafka.md)
+
+### 6、`Topic`、`Partition`、分区副本
+[`Topic`、`Partition`、分区副本](doc/kafka_06_Kafka_Topic、Partition、分区副本.md)
