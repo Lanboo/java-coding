@@ -24,3 +24,6 @@
     - [`enable.auto.commit`、`auto.commit.interval.ms`](doc/kafka_04_Kafka参数简介.md#22enableautocommitautocommitintervalms)
     - [`auto.offset.reset`](doc/kafka_04_Kafka参数简介.md#23autooffsetreset)
     - [`max.poll.records`、`max.poll.interval.ms`](doc/kafka_04_Kafka参数简介.md#24maxpollrecordsmaxpollintervalms)
+
+### 5、SpringBoot集成Kafka
+[SpringBoot集成Kafka](doc/kafka_05_SpringBoot集成Kafka.md)
