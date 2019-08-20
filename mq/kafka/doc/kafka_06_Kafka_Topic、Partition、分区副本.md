@@ -26,9 +26,9 @@
 
 - Partition是以文件的形式存到Broker所在机器上的
     - 存储目录：config/server.properties
-        > ``` properties
-        > log.dirs=/tmp/kafka-logs
-        > ```
+        ``` properties
+        log.dirs=/tmp/kafka-logs
+        ```
     - 命名方式：`topic-分区下标`
 
 ## 3、分区副本
