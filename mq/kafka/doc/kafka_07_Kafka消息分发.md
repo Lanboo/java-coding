@@ -1,6 +1,6 @@
 [toc]
 
-# Kafka数据生产流程
+# Kafka消息分发
 ![](https://upload-images.jianshu.io/upload_images/2595955-afed948bbea5c1d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/431/format/webp)
 
 ## 1、指定分区
