@@ -30,3 +30,6 @@
 
 ### 6、`Topic`、`Partition`、分区副本
 [`Topic`、`Partition`、分区副本](doc/kafka_06_Kafka_Topic、Partition、分区副本.md)
+
+### 7、Kafka消息分发
+[Kafka消息分发](doc/kafka_07_Kafka消息分发.md)
