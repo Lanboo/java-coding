@@ -69,6 +69,7 @@ public class DefaultPartitioner implements Partitioner {
     public void close() {}
 }
 ```
+### 2.1、自定义分区器
 另外，分发器可以自己实现分发规则，同时指定分发器就行
 ``` java
 Properties properties = new Properties();
