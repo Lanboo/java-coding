@@ -32,6 +32,7 @@
 - 同一个`Consumer Group`中，新增了消费线程
 - 消费线程离开了当前`Consumer Group`，例如消费线程主动停机或者宕机。
 - 当前topic新增了分区。
+
 以上都会触发重新分配分区，即`rebalance`
 
 ## 2.2、多个分区多个消费线程
@@ -70,6 +71,11 @@ this.kafkaConsumer = new KafkaConsumer<>(properties);
 > m = 分区数 % 消费线程数
 
 > 那前m个消费线程将消费n+1个分区，剩下的消费线程将消费n个分区。
+
+eg：10个分区，3个消费者，分配结果:<br>
+c1：p0、p1、p2、p3<br>
+c2：p4、p5、p6<br>
+c3：p7、p8、p9<br>
 
 ### 3.2、`RoundRobinAssignor`
 > 轮询分区策略是把所有partition和所有consumer线程都列出来，然后按照hashcode进行排序。最后通过轮询算法分配partition给消费线程。
