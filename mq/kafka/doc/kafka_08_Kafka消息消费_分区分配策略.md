@@ -72,13 +72,42 @@ this.kafkaConsumer = new KafkaConsumer<>(properties);
 
 > 那前m个消费线程将消费n+1个分区，剩下的消费线程将消费n个分区。
 
-eg：10个分区，3个消费者，分配结果:<br>
-c1：p0、p1、p2、p3<br>
-c2：p4、p5、p6<br>
-c3：p7、p8、p9<br>
+- eg：10个分区，3个消费者，分配结果:<br>
+    <div style = "font-size:13px;">
+
+    消费者|分区|-|消费者|分区|
+    :-:|:-|:-|:-:|:-
+    c1|p0、p1、p2、p3|-|c1|p0、p1、p2、p3、p4
+    c2|p4、p5、p6|-|c2|p5、p6、`p7`、`p8`、`p9`
+    c3|`p7`、`p8`、`p9`|-|c3宕机|-
+    </div>
+
+> `RangeAssignor`策略针对同一个Topic而言的。
+
+- eg2：两个Topic，每个Topic10个分区，3个消费者，分配结果:<br>
+    <div style = "font-size:13px;">
+
+    消费者|Topic1的分区|Topic2的分区
+    :-|:-|:-
+    c1|p0、p1、p2、p3|p0、p1、p2、p3
+    c2|p4、p5、p6|p4、p5、p6
+    c3|p7、p8、p9|p7、p8、p9
+    </div>
+> <b>弊端</b>：在Topic数量多的情况下，会造成某个消费者消费的分区远远大于其他的消费者
 
 ### 3.2、`RoundRobinAssignor`
 > 轮询分区策略是把所有partition和所有consumer线程都列出来，然后按照hashcode进行排序。最后通过轮询算法分配partition给消费线程。
+
+- eg：4个Topic，每个Topic有两个分区，同一个Group存在3个消费者，分配结果：
+    <div style = "font-size:13px;">
+
+    消费者|分区|-|消费者|分区
+    :-:|:-|:-|:-:|:-
+    c1|t0p0、t1p1、t3p0|-|c1|t0p0、`t1p0`、t2p0、t3p0
+    c2|t0p1、t2p0、t3p1|-|c2|t0p1、t1p1、`t2p1`、t3p1
+    c3|`t1p0`、`t2p1`      |-|c3宕机|-
+    </div>
+
 
 ### 3.3、`StickyAssignor`
 > kafka在0.11.x版本支持了StrickyAssignor, 翻译过来叫粘滞策略，它主要有两个目的
@@ -86,4 +115,15 @@ c3：p7、p8、p9<br>
 - 分区的分配尽可能和上次分配保持相同
 > 当两者发生冲突时， 第 一 个目标优先于第二个目标。
 
+- eg：4个Topic，每个Topic有两个分区，同一个Group存在3个消费者，分配结果：
+    <div style = "font-size:13px;">
+
+    消费者|分区|-|消费者|分区
+    :-:|:-|:-|:-:|:-
+    c1|t0p0、t1p1、t3p0|-|c1|t0p0、t1p1、t3p0、`t1p0`
+    c2|t0p1、t2p0、t3p1|-|c2|t0p1、t2p0、t3p1、`t2p1`
+    c3|`t1p0`、`t2p1`      |-|c3宕机|-
+
+    PS：首次分配是轮询，再次分配，就会尽量保持前一次的分配结果。
+    </div>
 
