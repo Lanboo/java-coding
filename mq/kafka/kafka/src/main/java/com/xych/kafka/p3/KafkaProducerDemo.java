@@ -19,7 +19,7 @@ public class KafkaProducerDemo implements Runnable {
 
     private void init() {
         Properties properties = new Properties();
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "www.xych.online:9092");
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "xych.online:9092,xych.online:9093,xych.online:9094");
         properties.put(ProducerConfig.CLIENT_ID_CONFIG, this.getClass().getSimpleName());
         properties.put(ProducerConfig.ACKS_CONFIG, "-1");
         // Key 的序列化方式
@@ -35,7 +35,7 @@ public class KafkaProducerDemo implements Runnable {
         while(num < 50) {
             String message = "message_offset" + num;
             System.out.println("begin send message:" + message);
-            ProducerRecord<Integer, String> record = new ProducerRecord<>(topic, 0, null, message);
+            ProducerRecord<Integer, String> record = new ProducerRecord<>(topic, num, message);
             kafkaProducer.send(record);
             num++;
             try {
