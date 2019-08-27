@@ -48,8 +48,9 @@ public class KafkaConsumerDemo implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         new Thread(new KafkaConsumerDemo("test")).start();
-        // new Thread(new KafkaConsumerDemo("test")).start();
+        Thread.sleep(2000);
+        new Thread(new KafkaConsumerDemo("test")).start();
     }
 }
