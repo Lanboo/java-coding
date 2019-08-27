@@ -15,15 +15,15 @@
 [Kafka参数简介](doc/kafka_04_Kafka参数简介.md)
 
 - `Producer`端参数
-    - [`acks`](doc/kafka_04_Kafka参数简介.md#11acks)
-    - [`batch.size`](doc/kafka_04_Kafka参数简介.md#12batchsize)
-    - [`linger.ms`](doc/kafka_04_Kafka参数简介.md#13lingerms)
-    - [`max.request.size`](doc/kafka_04_Kafka参数简介.md#14maxrequestsize)
+    - [acks](doc/kafka_04_Kafka参数简介.md#11acks)
+    - [batch.size](doc/kafka_04_Kafka参数简介.md#12batchsize)
+    - [linger.ms](doc/kafka_04_Kafka参数简介.md#13lingerms)
+    - [max.request.size](doc/kafka_04_Kafka参数简介.md#14maxrequestsize)
 - `Consumer`端参数
-    - [`group.id`](doc/kafka_04_Kafka参数简介.md#21groupid)
-    - [`enable.auto.commit`、`auto.commit.interval.ms`](doc/kafka_04_Kafka参数简介.md#22enableautocommitautocommitintervalms)
-    - [`auto.offset.reset`](doc/kafka_04_Kafka参数简介.md#23autooffsetreset)
-    - [`max.poll.records`、`max.poll.interval.ms`](doc/kafka_04_Kafka参数简介.md#24maxpollrecordsmaxpollintervalms)
+    - [group.id](doc/kafka_04_Kafka参数简介.md#21groupid)
+    - [enable.auto.commit、auto.commit.interval.ms](doc/kafka_04_Kafka参数简介.md#22enableautocommitautocommitintervalms)
+    - [auto.offset.reset](doc/kafka_04_Kafka参数简介.md#23autooffsetreset)
+    - [max.poll.records、max.poll.interval.ms](doc/kafka_04_Kafka参数简介.md#24maxpollrecordsmaxpollintervalms)
 
 ### 5、SpringBoot集成Kafka
 [SpringBoot集成Kafka](doc/kafka_05_SpringBoot集成Kafka.md)
@@ -36,3 +36,6 @@
 
 ### 8、消息消费_分区分配策略简介
 [消息消费_分区分配策略简介](doc/kafka_08_Kafka消息消费_分区分配策略.md)
+
+### 9、消息消费_分配分区
+[消息消费_分配分区简介](doc/kafka_09_Kafka消息消费_分配分区.md)
