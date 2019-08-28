@@ -39,3 +39,9 @@
 
 ### 9、消息消费_分配分区
 [消息消费_分配分区简介](doc/kafka_09_Kafka消息消费_分配分区.md)
+
+### 10、消息消费_offset
+[消息消费_offset](doc/kafka_10_Kafka消息消费_offset.md)
+
+### 11、分区副本机制
+[分区副本机制](doc/kafka_11_Kafka分区副本机制.md)
