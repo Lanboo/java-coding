@@ -50,7 +50,7 @@ Topic:test	PartitionCount:3	ReplicationFactor:3	Configs:segment.bytes=1048576,re
 
 - ISR集合的维护
     1. 可用
-    2. 副本最后一条消息的offset与Leader最后一条消息的offset的时间差值不能超过指定的阈值：[replica.lag.time.max.ms](http://kafka.apache.org/documentation/#brokerconfigs)，否则该副本会踢出ISR集合。
+    2. 副本最后一条消息的offset与Leader最后一条消息的offset的时间差值不能超过指定的阈值：[replica.lag.time.max.ms](http://kafka.apache.org/documentation/#brokerconfigs)，否则该副本会被踢出ISR集合。
     3. 被踢出ISR集合的副本，当满足2之后，则重新加入ISR集合。
-
-- ISR集合为空时，Leader副本挂掉，怎么选举？
+<br><br>
+- ISR集合为空时，Leader副本挂掉，怎么选举？ 
