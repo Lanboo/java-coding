@@ -53,4 +53,12 @@ Topic:test	PartitionCount:3	ReplicationFactor:3	Configs:segment.bytes=1048576,re
     2. 副本最后一条消息的offset与Leader最后一条消息的offset的时间差值不能超过指定的阈值：[replica.lag.time.max.ms](http://kafka.apache.org/documentation/#brokerconfigs)，否则该副本会被踢出ISR集合。
     3. 被踢出ISR集合的副本，当满足2之后，则重新加入ISR集合。
 <br><br>
-- ISR集合为空时，Leader副本挂掉，怎么选举？ 
+- 所有副本均不可用，怎么选举Leader？
+    1. 等待ISR中的任一个Replica“活”过来，并且选它作为Leader
+    2. 选择第一个“活”过来的Replica（不一定是ISR中的）作为Leader
+    - 选择1，那不可用的时间就可能会相对较长
+    - 选择2，那即使它并不保证已经包含了所有已commit的消息，它也会成为Leader而作为consumer的数据源。从而造成数据丢失。
+
+    - `unclean.leader.election.enable`：默认值：false。
+        - Indicates whether to enable replicas not in the ISR set to be elected as leader as a last resort, even though doing so may result in data loss.
+        - 指示是否允许不在ISR集中的副本被选为最终的领导者，即使这样做可能会导致数据丢失。
