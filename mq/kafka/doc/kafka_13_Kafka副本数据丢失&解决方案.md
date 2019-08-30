@@ -37,8 +37,8 @@ public static final String ACKS_CONFIG = "acks";
 <div style = "font-size:13px;">
 
 图|讲解
-:-:|:-|:-
-![s](../etc/kafka_副本数据丢失_1.png)|<b>步骤1：</b><br>0、初始状态：Leader接收Producer消息，leader.LEO变为3<br>1、follower发起fetch请求，携带follower.LEO=2<br>2、leader接收到请求之后，<br>&nbsp;&nbsp;&nbsp;&nbsp;2.1、`remote.LEO=follower.LEO`=2,<br>&nbsp;&nbsp;&nbsp;&nbsp;2.2、`follower.HW = min(follower.LEO, leader.HW)`=2<br>&nbsp;&nbsp;&nbsp;&nbsp;2.3、响应参数（msg、leader.LEO=3）<br>3、follower接收响应<br>&nbsp;&nbsp;&nbsp;&nbsp;3.1、将消息追加到log文件，更新LEO=3<br>&nbsp;&nbsp;&nbsp;&nbsp;3.2、`follower.HW = min(follower.LEO, leader.HW)`=2
+:-:|:-
+![](../etc/kafka_副本数据丢失_1.png)|<b>步骤1：</b><br>0、初始状态：Leader接收Producer消息，leader.LEO变为3<br>1、follower发起fetch请求，携带follower.LEO=2<br>2、leader接收到请求之后，<br>&nbsp;&nbsp;&nbsp;&nbsp;2.1、`remote.LEO=follower.LEO`=2,<br>&nbsp;&nbsp;&nbsp;&nbsp;2.2、`follower.HW = min(follower.LEO, leader.HW)`=2<br>&nbsp;&nbsp;&nbsp;&nbsp;2.3、响应参数（msg、leader.LEO=3）<br>3、follower接收响应<br>&nbsp;&nbsp;&nbsp;&nbsp;3.1、将消息追加到log文件，更新LEO=3<br>&nbsp;&nbsp;&nbsp;&nbsp;3.2、`follower.HW = min(follower.LEO, leader.HW)`=2
 ![](../etc/kafka_副本数据丢失_2.png)|<b>步骤2：</b><br>follower端再次发起fetch请求<br>1、leader接收到请求之后<br>&nbsp;&nbsp;&nbsp;&nbsp;1.1、`remote.LEO=follower.LEO`=3,<br>&nbsp;&nbsp;&nbsp;&nbsp;1.2、`follower.HW = min(follower.LEO, leader.HW)`=3<br>&nbsp;&nbsp;&nbsp;&nbsp;1.3、响应参数（leader.LEO=3）<br>2、follower接收响应<br>&nbsp;&nbsp;&nbsp;&nbsp;2.1、无消息，不更新LEO<br>&nbsp;&nbsp;&nbsp;&nbsp;2.2、`follower.HW = min(follower.LEO, leader.HW)`=3
 </div>
 
@@ -52,7 +52,7 @@ public static final String ACKS_CONFIG = "acks";
 
 那么，follower恢复之后，发现HW<LEO，就会丢弃2号消息，并设置LEO=HW，之后重新发起fetch请求，同步Leader分区。
 
-<b>在假设，follower恢复之后，未发起新的fetch请求，Leader节点宕机了，那么此时，broker.id=2的节点就会成为新的Leader节点</b>
+<b>在假设，follower恢复之后，未发起新的fetch请求，Leader节点宕机了，那么此时，broker.id=2作为ISR中唯一的节点，就会成为新的Leader节点</b>
 
 在这种情况下，新的Leader节点的LEO、HW都为2，即只包含了两条消息，2号消息在该几点重启的时候，删除掉了。
 但是2号消息的ack已经被前一个Leader节点发给生产者了。
