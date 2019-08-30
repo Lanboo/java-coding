@@ -43,34 +43,17 @@ eg：如果LEO=10，那么表示存储了10条消息，偏移量范围为[0,9]�
 
 ### 2.2、第一种情况
 > leader处理完producer请求之后，follower发送一个fetch请求过来。
-1. 初始状态
-    > ![](../etc/kafka_副本数据同步_方式1_步骤1.png)
-2. producer发送一条消息
-    > ![](../etc/kafka_副本数据同步_方式1_步骤2.png)
+<div style = "font-size:13px;">
 
-    - Leader端：
-        1. 将消息追加到log文件，更新`LEO=1`
-        2. 更新HW的值：`leader.HW = min(leader.LEO, remote.LEO)`。此时为0
-3. follower发起`fetch请求`
-    > ![](../etc/kafka_副本数据同步_方式1_步骤3.png)
+步骤|图|讲解
+:-|:-:|:-
+初始状态|&nbsp;![](../etc/kafka_副本数据同步_方式1_步骤1.png)|&nbsp;
+producer<br>发送一条消息|&nbsp;![](../etc/kafka_副本数据同步_方式1_步骤2.png)|Leader端：<br>&nbsp;&nbsp;&nbsp;&nbsp;1. 将消息追加到log文件，更新`LEO=1`<br>&nbsp;&nbsp;&nbsp;&nbsp;2. 更新HW的值：`leader.HW = min(leader.LEO, remote.LEO)`=0
+follower<br>发起fetch请求|&nbsp;![](../etc/kafka_副本数据同步_方式1_步骤3.png)|1、Leader端（收到fetch请求之后）：<br>&nbsp;&nbsp;&nbsp;&nbsp;1.1、更新`remote.LEO`：fetch请求中，携带follower的LEO值。此时为0<br>&nbsp;&nbsp;&nbsp;&nbsp;2.2、更新HW的值：`leader.HW = min(leader.LEO, remote.LEO)`=0<br>&nbsp;&nbsp;&nbsp;&nbsp;2.3、准备响应数据（消息内容、`leader.HW`）<br>2、Follower端（获取响应之后）：<br>&nbsp;&nbsp;&nbsp;&nbsp;2.1、将消息追加到log文件，更新LEO=1<br>&nbsp;&nbsp;&nbsp;&nbsp;2.2、更新HW的值：`follower.HW = min(follower.LEO, leader.HW)`=0
+follower<br><b>再次</b><br>发起`fetch请求`|&nbsp;![](../etc/kafka_副本数据同步_方式1_步骤4.png)|1、Leader端（收到fetch请求之后）：<br>&nbsp;&nbsp;&nbsp;&nbsp;1.1、更新`remote.LEO`：fetch请求中，携带follower的LEO值。此时为1<br>&nbsp;&nbsp;&nbsp;&nbsp;2.2、更新HW的值：`leader.HW = min(leader.LEO, remote.LEO)`=1<br>&nbsp;&nbsp;&nbsp;&nbsp;2.3、准备响应数据（`leader.HW`）<br>2、Follower端（获取响应之后）：<br>&nbsp;&nbsp;&nbsp;&nbsp;2.1、消息为null，不更新LEO<br>&nbsp;&nbsp;&nbsp;&nbsp;2.2、更新HW的值：`follower.HW = min(follower.LEO, leader.HW)`=1
 
-    - Leader端（收到`fetch请求`之后）：
-        1. 比较leader.LEO和follower.LEO，准备响应数据（消息内容、`leader.HW`）
-        2. 更新`remote.LEO`：fetch请求中，携带follower的LEO值。此时为0
-        3. 更新HW的值：`leader.HW = min(leader.LEO, remote.LEO)`。此时为0
-    - Follower端（获取响应之后）：
-        1. 将消息追加到log文件，更新`LEO=1`
-        2. 更新HW的值：`follower.HW = min(follower.LEO, leader.HW)`。此时为0
-4. follower再次发起`fetch请求`
-    > ![](../etc/kafka_副本数据同步_方式1_步骤4.png)
+</div>
 
-    - Leader端（收到`fetch请求`之后）：
-        1. 比较leader.LEO和follower.LEO，准备响应数据（`leader.HW`）
-        2. 更新`remote.LEO`：fetch请求中，携带follower的LEO值。此时为1
-        3. 更新HW的值：`leader.HW = min(leader.LEO, remote.LEO)`。此时为1
-    - Follower端（获取响应之后）：
-        1. 消息为null，不更新LEO
-        2. 更新HW的值：`follower.HW = min(follower.LEO, leader.HW)`。此时为1
 ### 2.3、第二种情况
 > follower阻塞在leader指定时间之内，leader副本收到producer的请求。
 
