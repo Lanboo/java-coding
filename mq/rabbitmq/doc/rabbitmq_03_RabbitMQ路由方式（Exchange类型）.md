@@ -28,6 +28,8 @@ public enum BuiltinExchangeType {
 > Exchange和Queue的绑定需要指定一个精确绑定键。<br>
 > 只有当消息携带的routingKey和绑定键完全匹配时，才会路由到对应的Queue上。
 
+参考：[官方文档](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-direct)
+
 ![](../etc/RabbitMQ_Direct_Exchange.png)
 
 当消息的routingKey=orange时，该消息会被Exchange分发至Q1、Q2上。
@@ -38,6 +40,9 @@ public enum BuiltinExchangeType {
 > 通配符：<br>
 > `#` 0个或多个<b>单词</b><br>
 > `*` 当且仅当1个<b>单词</b>
+
+
+参考：[官方文档](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-topic)
 
 ![](../etc/RabbitMQ_Topic_Exchange.png)
 
@@ -51,6 +56,8 @@ public enum BuiltinExchangeType {
 > 因此生产者发送消息到广播类型的交换机上，也不需要携带路由键。<br>
 > 消息达到交换机时，所有与之绑定了的队列，都会收到相同的消息的副本。
 
+参考：[官方文档](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-fanout)
+
 ![](../etc/RabbitMQ_Fanout_Exchange.png)
 
 应用场景举例：商户信息的写操作，可以通过该交换机类型通知其他业务系统。
@@ -58,6 +65,8 @@ public enum BuiltinExchangeType {
 ## 5、headers exchange
 > 忽略绑定键，使用header属性进行路由。<br>
 > 在对Exchange和Queue绑定时，执行headers，其中必须指定`x-match`。<br>
+
+参考：[官方文档](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-headers)
 
 - `x-match = any`
     > 当消息的headers和绑定关系的headers有一个相同，该消息就会被分发至该队列上<br>
