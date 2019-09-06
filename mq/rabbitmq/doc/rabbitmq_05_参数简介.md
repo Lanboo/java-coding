@@ -65,4 +65,49 @@ arguments|- `x-match`：参考[交换机类型：headers](rabbitmq_03_RabbitMQ�
 
 </div>
 
-## 4、消息参数
+## 4、消息属性
+``` java
+AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
+        .deliveryMode(2) // 持久化消息
+        .contentEncoding("UTF-8")
+        .expiration("10000") // TTL
+        .build();
+
+// com.rabbitmq.client.Channel
+void basicPublish(String exchange, String routingKey, BasicProperties props, byte[] body) throws IOException;
+```
+<div style = "font-size:13px;">
+
+参数|含义
+:-|:-
+exchange|交换机名称
+routingKey|路由键
+props|消息属性
+body|消息内容
+</div>
+
+- 消息属性（com.rabbitmq.client.AMQP.BasicProperties）
+
+<div style = "font-size:13px;">
+
+参数|JavaAPI参数|Java类型|含义
+:-|:-|:-|:-
+<b>Delivery mode</b>|deliveryMode|Integer|2持久化；其他:瞬态
+Headers|headers|Map<String,Object>|消息的其他自定义参数<br>参考[交换机类型：headers](rabbitmq_03_RabbitMQ路由方式（Exchange类型）.md#5headers-exchange)
+content_type|contentType|String|消息类型
+content_encoding|contentEncoding|String|消费编码格式
+<b>priority</b>|priority|Integer|消息的优先级
+<b>correlation_id</b>|correlationId|String|关联ID，方便RPC 相应与请求关联
+reply_to|replyTo|String|回调队列
+<b>expiration</b>|expiration|String|TTL，消息过期时间，单位毫秒
+message_id|messageId|String|消息Id
+timestamp|timestamp|Date|时间戳
+type|type|String|类型
+user_id|userId|String|用户Id
+app_id|appId|String|应用程序Id
+cluster_id|clusterId|String|集群Id
+
+</div>
+
+
+![](../etc/RabbitMQ_PublishMessage.png)
