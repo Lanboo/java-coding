@@ -86,8 +86,8 @@ void basicPublish(String exchange, String routingKey, BasicProperties props, byt
 
 参数|含义
 :-|:-
-exchange|交换机名称
-routingKey|路由键
+exchange|交换机名称。为`""`指默认交换机
+routingKey|路由键。<br>当一个队列未指定交换机，即该队列使用的是默认交换机，那么routingKey填写队列名称
 props|消息属性
 body|消息内容
 </div>
