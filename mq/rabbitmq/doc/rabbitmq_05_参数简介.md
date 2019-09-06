@@ -9,6 +9,8 @@ Exchange.DeclareOk exchangeDeclare(String exchange, BuiltinExchangeType type, bo
         boolean autoDelete, boolean internal, Map<String, Object> arguments) throws IOException;
 ```
 
+<b>注意：重复声明，参数一致才不会报错。</b>
+
 <div style = "font-size:13px;">
 
 参数|含义
@@ -33,6 +35,8 @@ arguments|其他参数：<br>- `alternate-exchange`：消息无法直接发送�
 Queue.DeclareOk queueDeclare(String queue, boolean durable, boolean exclusive, boolean autoDelete,
                             Map<String, Object> arguments) throws IOException;
 ```
+
+<b>注意：重复声明，参数一致才不会报错。</b>
 <div style = "font-size:13px;">
 
 参数|含义
@@ -54,6 +58,8 @@ arguments|- `x-message-ttl`：队列中消息的存活时间，单位毫秒<br>-
 Queue.BindOk queueBind(String queue, String exchange, String routingKey) throws IOException;
 Queue.BindOk queueBind(String queue, String exchange, String routingKey, Map<String, Object> arguments) throws IOException;
 ```
+<b>注意：重复绑定时，参数不一致会增加一条新的绑定规则。</b>
+
 <div style = "font-size:13px;">
 
 参数|含义
