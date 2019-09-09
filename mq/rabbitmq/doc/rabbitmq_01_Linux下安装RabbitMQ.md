@@ -76,10 +76,11 @@ Warning: PID file not written; -detached was passed.
 ### 2.3、用户权限
 <div style = "font-size:13px;">
 
+[Access and Permissions](https://www.rabbitmq.com/management.html#permissions)
 权限|含义|权限范围
 :-|:-|:-
 none|-|- 无法登录控制台。<br>- 可以通过AMQP做相关事情<br><br>通常是普通的生产者和消费者。
-management|普通管理者|- 可登陆管理控制台，无法看到节点信息，也无法对policies进行管理。<br>- 可以通过AMQP做相关事情<br>- 列出自己可以通过AMQP登入的virtual hosts<br>- 查看自己的virtual hosts中的queues, exchanges 和 bindings<br>- 查看和关闭自己的channels 和 connections<br>- 查看有关自己的virtual hosts的“全局”的统计信息，包含其他用户在这些virtual hosts中的活动。
+management|普通管理者|- 可登陆管理控制台，无法看到节点信息，也无法对policies进行管理。<br>- 可以通过AMQP做相关事情<br>- 列出自己可以通过AMQP登入的virtual hosts<br>- 查看自己的virtual hosts中的queues, exchanges 和 bindings<br>- 查看和关闭自己的channels和connections<br>- 查看有关自己的virtual hosts的“全局”的统计信息，包含其他用户在这些virtual hosts中的活动。
 policymaker|策略制定者|- management可以做的任何事<br>- 查看、创建和删除自己的virtual hosts所属的policies和parameters
 monitoring|监控者|- management可以做的任何事<br>- 列出所有virtual hosts，包括他们不能登录的virtual hosts<br>- 查看其他用户的connections和channels<br>- 查看节点级别的数据如clustering和memory使用情况<br>- 查看真正的关于所有virtual hosts的全局的统计信息<br>- 同时可以查看rabbitmq节点的相关信息(进程数，内存使用情况，磁盘使用情况等)
 administrator|超级管理员|- policymaker和monitoring可以做的任何事<br>- 创建和删除virtual hosts<br>- 查看、创建和删除users<br>- 查看创建和删除permissions<br>- 关闭其他用户的connections
@@ -123,3 +124,18 @@ administrator|超级管理员|- policymaker和monitoring可以做的任何事<br
     # 清除权限
     > ./rabbitmqctl clear_permissions [-p VHostPath] User
     ```
+
+## 3、配置文件
+
+[官方文档-配置文件](https://www.rabbitmq.com/configure.html#configuration-files)
+
+> 配置文件默认不存在，需要手动添加
+
+> Linux建议配置路径：$RABBITMQ_HOME/etc/rabbitmq/
+
+> 3.7.0版本后，配置文件支持新格式：[新旧格式区别](https://www.rabbitmq.com/configure.html#config-file-formats)<br>
+> 旧格式配置文件名：rabbitmq.config<br>
+> 新格式配置文件名：rabbitmq.conf<br>
+> 配置文件示例：[rabbitmq.conf.example](https://github.com/rabbitmq/rabbitmq-server/blob/v3.7.x/docs/rabbitmq.conf.example)
+
+> 配置文件各个参数：[config-items](https://www.rabbitmq.com/configure.html#config-items)
