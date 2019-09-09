@@ -72,6 +72,9 @@ cd rabbitmq_server-3.7.17/sbin
 > cd rabbitmq_server-3.7.17/sbin
 > ./rabbitmq-server -detached
 Warning: PID file not written; -detached was passed.
+
+# 停止服务
+> ./rabbitmqctl stop
 ```
 ### 2.3、用户权限
 <div style = "font-size:13px;">
