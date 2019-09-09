@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import com.rabbitmq.client.AMQP;
 
-public class TTLProducer extends BaseRabbitMQ {
+public class TtlProducer extends BaseRabbitMQ {
     public static void main(String[] args) throws Exception {
-        new TTLProducer().run();
+        new TtlProducer().run();
         Thread.sleep(1000);
     }
     
