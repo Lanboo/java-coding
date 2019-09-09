@@ -30,11 +30,23 @@
 > 目前只支持：Linux
 
 [官方插件](https://www.rabbitmq.com/community-plugins.html)
-
+、
 [3.7.x](https://dl.bintray.com/rabbitmq/community-plugins/3.7.x/rabbitmq_delayed_message_exchange/rabbitmq_delayed_message_exchange-20171201-3.7.x.zip)
 
 ``` shell
 cd rabbitmq_server-3.7.17/plugins
 wget https://dl.bintray.com/rabbitmq/community-plugins/3.7.x/rabbitmq_delayed_message_exchange/rabbitmq_delayed_message_exchange-20171201-3.7.x.zip
 
+# 解压
+unzip rabbitmq_delayed_message_exchange-20171201-3.7.x.zip
+# 重命名
+mv rabbitmq_delayed_message_exchange-20171201-3.7.x.ez rabbitmq_delayed_message_exchange-3.7.x.ez
+
+cd ../sbin
+# 启用插件
+./rabbitmq-plugins enable rabbitmq_delayed_message_exchange
+# 停止服务
+./rabbitmqctl stop
+# 启动服务
+./rabbitmq-server -detached
 ```
