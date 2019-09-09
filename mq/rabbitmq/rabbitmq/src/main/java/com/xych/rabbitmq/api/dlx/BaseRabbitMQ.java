@@ -1,4 +1,4 @@
-package com.xych.rabbitmq.api.dlq;
+package com.xych.rabbitmq.api.dlx;
 
 import java.io.IOException;
 import java.util.HashMap;
