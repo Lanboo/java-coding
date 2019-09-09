@@ -20,7 +20,7 @@ type|[交换机类型](rabbitmq_03_RabbitMQ路由方式（Exchange类型）.md)
 durable|是否持久化，代表交换机在服务器重启后是否还存在。
 autoDelete|是否自动删除。<br>如果是，在第一个Queue或者Exchange与之绑定后，<br>则在所有的Queue、Exchange与之解除绑定后，自动删除自身。
 internal|如果是，只能和其他Exchange进行绑定。
-arguments|其他参数：<br>- `alternate-exchange`：消息无法直接发送到该Exchange上，只能发送至该参数指定的Exchange上。<br>- 其他自定义参数
+arguments|其他参数：<br>- `alternate-exchange`：当某个消息根据路由键找不到任何一个队列时，该消息就被该交换机发送到该参数指定的交换机上。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;比如：使用该机制，将找不到队列消息时入库、记录日志、发送邮件等。<br>- 其他自定义参数
 
 </div>
 
