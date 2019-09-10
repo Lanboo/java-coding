@@ -17,5 +17,8 @@ target
 # Compiled class file
 *.class
 
+# vscode
+.vscode
+
 # 本身也忽略
 # .gitignore
