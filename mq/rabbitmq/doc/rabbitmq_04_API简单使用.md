@@ -106,8 +106,6 @@ public class RabbitMQProducer extends BaseRabbitMQ {
 
 ## 3、Consumer
 ``` java
-import java.io.IOException;
-
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
@@ -116,7 +114,6 @@ import com.rabbitmq.client.Envelope;
 public class RabbitMQConsumer extends BaseRabbitMQ {
     public static void main(String[] args) throws InterruptedException {
         new RabbitMQConsumer().run();
-        Thread.sleep(10000);
     }
 
     @Override
@@ -134,8 +131,9 @@ public class RabbitMQConsumer extends BaseRabbitMQ {
             // 开始获取消息
             String result = channel.basicConsume(QUEUE_NAME, true, consumer);
             System.out.println("Consume result:" + result);
+            Thread.sleep(10000); // 阻塞一下，防止连接关闭
         }
-        catch(IOException e) {
+        catch(Exception e) {
             e.printStackTrace();
         }
     }
