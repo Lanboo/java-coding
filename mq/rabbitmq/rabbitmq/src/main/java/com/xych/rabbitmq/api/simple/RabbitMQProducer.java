@@ -13,9 +13,11 @@ public class RabbitMQProducer extends BaseRabbitMQ {
     @Override
     public void doRun() {
         try {
-            String msg = "Simple Msg_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-            System.out.println(msg);
-            channel.basicPublish(EXCHANGE, ROUTING_KEY, null, msg.getBytes());
+            for(int i = 0; i < 10; i++) {
+                String msg = "Simple Msg_" + i + "_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+                System.out.println(msg);
+                channel.basicPublish(EXCHANGE, ROUTING_KEY, null, msg.getBytes());
+            }
         }
         catch(IOException e) {
             e.printStackTrace();
