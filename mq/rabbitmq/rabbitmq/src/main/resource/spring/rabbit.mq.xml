@@ -9,14 +9,14 @@
 
     <!-- 定义RabbitAdmin，会触发InitializingBean.afterPropertiesSet方法 -->
     <!-- 从而去RabbitMQ服务器上创建队列、交换机、绑定关系 -->
-    <rabbit:admin id="connectAdmin" connection-factory="connectionFactory" auto-startup="true"/>
+    <rabbit:admin id="connectAdmin" connection-factory="connectionFactory" />
 
     <rabbit:template id="rabbitTemplate" connection-factory="connectionFactory" />
 
     <!-- 定义队列 -->
-    <rabbit:queue name="SPRING_QUEUE_1" durable="true" auto-delete="false" declared-by="connectAdmin" />
-    <rabbit:queue name="SPRING_QUEUE_2" durable="true" auto-delete="false" declared-by="connectAdmin" />
-    <rabbit:queue name="SPRING_QUEUE_3" durable="true" auto-delete="false" declared-by="connectAdmin" />
+    <rabbit:queue name="SPRING_QUEUE_1" durable="true" auto-delete="false" exclusive="false" declared-by="connectAdmin" />
+    <rabbit:queue name="SPRING_QUEUE_2" durable="true" auto-delete="false" exclusive="false" declared-by="connectAdmin" />
+    <rabbit:queue name="SPRING_QUEUE_3" durable="true" auto-delete="false" exclusive="false" declared-by="connectAdmin" />
 
     <!-- 定义交换机1 direct -->
     <rabbit:direct-exchange name="SPRING_EXCHANGE_1" durable="true" auto-delete="false" declared-by="connectAdmin">
@@ -37,12 +37,12 @@
     <!-- 消费者 Bean -->
     <bean id="firstConsumer" class="com.xych.rabbitmq.spring.consumer.FirstConsumer" />
     <bean id="secondConsumer" class="com.xych.rabbitmq.spring.consumer.SecondConsumer" />
-    <bean id="threeConsumer" class="com.xych.rabbitmq.spring.consumer.ThreeConsumer" />
+    <bean id="thirdConsumer" class="com.xych.rabbitmq.spring.consumer.ThirdConsumer" />
 
     <!-- queue litener 观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象 -->
     <rabbit:listener-container connection-factory="connectionFactory">
         <rabbit:listener queues="SPRING_QUEUE_1" ref="firstConsumer" />
         <rabbit:listener queues="SPRING_QUEUE_2" ref="secondConsumer" />
-        <rabbit:listener queues="SPRING_QUEUE_3" ref="threeConsumer" />
+        <rabbit:listener queues="SPRING_QUEUE_3" ref="thirdConsumer" />
     </rabbit:listener-container>
 </beans>
