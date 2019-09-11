@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit" xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/rabbit
+     http://www.springframework.org/schema/rabbit/spring-rabbit-1.2.xsd">
+
+    <!-- 连接工厂 -->
+    <rabbit:connection-factory id="connectionFactory" virtual-host="/" host="xych.online" port="5672" username="admin" password="admin" />
+
+    <!-- 定义RabbitAdmin，会触发InitializingBean.afterPropertiesSet方法 -->
+    <!-- 从而去RabbitMQ服务器上创建队列、交换机、绑定关系 -->
+    <rabbit:admin id="connectAdmin" connection-factory="connectionFactory" auto-startup="true"/>
+
+    <rabbit:template id="rabbitTemplate" connection-factory="connectionFactory" />
+
+    <!-- 定义队列 -->
+    <rabbit:queue name="SPRING_QUEUE_1" durable="true" auto-delete="false" declared-by="connectAdmin" />
+    <rabbit:queue name="SPRING_QUEUE_2" durable="true" auto-delete="false" declared-by="connectAdmin" />
+    <rabbit:queue name="SPRING_QUEUE_3" durable="true" auto-delete="false" declared-by="connectAdmin" />
+
+    <!-- 定义交换机1 direct -->
+    <rabbit:direct-exchange name="SPRING_EXCHANGE_1" durable="true" auto-delete="false" declared-by="connectAdmin">
+        <rabbit:bindings>
+            <rabbit:binding queue="SPRING_QUEUE_1" key="spring_routing_key_1" />
+            <rabbit:binding queue="SPRING_QUEUE_2" key="spring_routing_key_2" />
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!-- 定义交换机2 topic -->
+    <rabbit:topic-exchange name="SPRING_EXCHANGE_2" durable="true" auto-declare="false" declared-by="connectAdmin">
+        <rabbit:bindings>
+            <!-- 通配符：# 0个或多个单词；* 当且仅当1个单词 -->
+            <rabbit:binding queue="SPRING_QUEUE_3" pattern="#.Third.#" />
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+
+    <!-- 消费者 Bean -->
+    <bean id="firstConsumer" class="com.xych.rabbitmq.spring.consumer.FirstConsumer" />
+    <bean id="secondConsumer" class="com.xych.rabbitmq.spring.consumer.SecondConsumer" />
+    <bean id="threeConsumer" class="com.xych.rabbitmq.spring.consumer.ThreeConsumer" />
+
+    <!-- queue litener 观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象 -->
+    <rabbit:listener-container connection-factory="connectionFactory">
+        <rabbit:listener queues="SPRING_QUEUE_1" ref="firstConsumer" />
+        <rabbit:listener queues="SPRING_QUEUE_2" ref="secondConsumer" />
+        <rabbit:listener queues="SPRING_QUEUE_3" ref="threeConsumer" />
+    </rabbit:listener-container>
+</beans>
