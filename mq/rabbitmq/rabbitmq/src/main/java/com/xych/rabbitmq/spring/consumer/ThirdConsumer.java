@@ -6,7 +6,7 @@ import org.springframework.amqp.core.MessageListener;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ThreeConsumer implements MessageListener {
+public class ThirdConsumer implements MessageListener {
     @Override
     public void onMessage(Message message) {
         log.info("Second Queue Consumer received message:{}", message);
