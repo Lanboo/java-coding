@@ -77,9 +77,10 @@ Warning: PID file not written; -detached was passed.
 > ./rabbitmqctl stop
 ```
 ### 2.3、用户权限
+[Access and Permissions](https://www.rabbitmq.com/management.html#permissions)
+
 <div style = "font-size:13px;">
 
-[Access and Permissions](https://www.rabbitmq.com/management.html#permissions)
 权限|含义|权限范围
 :-|:-|:-
 none|-|- 无法登录控制台。<br>- 可以通过AMQP做相关事情<br><br>通常是普通的生产者和消费者。
