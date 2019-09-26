@@ -54,7 +54,7 @@ null
 // 自定义了一个package，名称为java.lang
 package java.lang;
 
-// 在自定义的java.lang常见一个String类，并包含main方法
+// 在自定义的java.lang创建一个String类，并包含main方法
 public class String {
     public static void main(String[] args) {
         System.out.println(new String().getClass().getClassLoader());
