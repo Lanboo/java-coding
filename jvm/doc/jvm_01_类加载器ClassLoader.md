@@ -1,3 +1,5 @@
+[toc]
+
 # 类加载器ClassLoader
 > 负责加签class文件<br>
 > ClassLoader只负责class文件的加载，至于class文件能否运行，则由Execution Engine决定。
@@ -6,6 +8,7 @@
 <div style="text-align:center">
 
 ![](../etc/ClassLoader.png)
+
 </div>
 
 ## 2、双亲委派模型
@@ -61,7 +64,7 @@ public class String {
 否则 JavaFX 应用程序类必须扩展javafx.application.Application
 ```
 
-### 3.3、`Class.forName` & `classLoader#loadClass`
+## 4、`Class.forName` & `classLoader#loadClass`
 - `Class.forName` 静态方法，根据传入的类全限定名称，加载Class对象到内存，并执行类初始化操作。
 - `classLoader#loadClass` 实例方法，根据传入的类全限定名称，加载Class对象到内存。
 
