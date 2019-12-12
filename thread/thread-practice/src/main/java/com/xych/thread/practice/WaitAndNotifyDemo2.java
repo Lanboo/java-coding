@@ -7,12 +7,14 @@ public class WaitAndNotifyDemo2 {
             public void run() {
                 synchronized(this) {
                     try {
-                        System.out.println("before notify");
+                        System.out.println("before thread notify");
                         notify();
+                        System.out.println("after thread notify");
                         Thread.sleep(1000);
+                        System.out.println("before thread wait");
                         this.wait();
+                        System.out.println("after thread wait");
                         Thread.sleep(1000);
-                        System.out.println("after notify");
                     }
                     catch(InterruptedException e) {
                         e.printStackTrace();
@@ -24,10 +26,14 @@ public class WaitAndNotifyDemo2 {
             try {
                 myThread.start();
                 Thread.sleep(1000);
-                System.out.println("before wait");
+                System.out.println("before main wait");
                 myThread.wait();
+                System.out.println("after main wait");
+                Thread.sleep(1000);
+                System.out.println("before main notify");
                 myThread.notify();
-                System.out.println("after wait");
+                System.out.println("after main notify");
+                Thread.sleep(1000);
             }
             catch(InterruptedException e) {
                 e.printStackTrace();
