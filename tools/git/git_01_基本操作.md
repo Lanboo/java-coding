@@ -32,10 +32,12 @@ $ git clone git@xxx/xxx.get
 ```
 [git clone命令详解](https://blog.csdn.net/zmzwll1314/article/details/53161958)
 
-## 4、git add 
-> 会将文件放到暂存区
+## 4、git add、git checkout
+> `git add` 会将文件放到暂存区
+> `git checkout` 放弃单个文件的修改
 ``` git 
 $ git add gitTemp.txt
+$ git checkout gitTemp.txt
 ```
 [git add 命令扩展](https://www.cnblogs.com/skura23/p/5859243.html)
 
