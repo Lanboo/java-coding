@@ -1,7 +1,7 @@
 [toc]
 
 # git操作流转图
-![各个操作流转图](https://img-blog.csdn.net/20170423160307093)
+![各个操作流转图](etc/git操作流转图.png)
 
 # 基本操作
 ## 1、git init
