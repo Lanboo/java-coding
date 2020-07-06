@@ -6,11 +6,17 @@
 ``` shell
 > grep -l key fileName   // 判断fileName是否存在key这个关键字，fileName可以用*
 > vim xxx.log            // 打开某个文件
-> G 或者 shift g         // 翻页至最后一页（光标定位到最后一行）
-> ?key                   // 在当前文件中搜索key，并高亮显示
+> gg                     // 移动到第一行
+> G                      // 移动到最后一行
+> ?key                   // 向后搜索key，并高亮显示
+> /key                   // 向前搜索key
 > ctrl b                 // 往回（向上）翻页
 > ctrl f                 // 向前（向下）翻页
+> yy                     // 复制一行到剪切板
+> p                      // 粘贴到光标之后
+> P                      // 粘贴到光标之前
 > :q                     // 退出
+> :wq                    // 保存并退出
 > :q!                    // 强制退出
 ```
 
