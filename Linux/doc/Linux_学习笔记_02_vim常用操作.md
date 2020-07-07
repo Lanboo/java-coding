@@ -20,4 +20,14 @@
 > :q!                    // 强制退出
 ```
 
+## `E325:ATTENTION`错误解决方法
+> 这是由于在编辑该文件的时候异常退出了，因为vim在编辑文件时会创建一个交换文件swap file以保证文件的安全性。
+
+
+``` shell
+# 为了去掉这个警告，需要删除这个swp文件
+# . + 文件名称 + .swp
+rm .filename.swp
+```
+
 [特别全的VIM命令](https://www.cnblogs.com/yangjig/p/6014198.html)
