@@ -20,8 +20,11 @@
 `rm -rf file`|递归删除文件或文件夹，<b>不可恢复</b>
 `ifconfg -a`|查看当前IP
 `ssh [-p port] userName@host`|ssh远程连接,之后输入密码|`ssh root@192.168.27.129`<br>`ssh -p 22 root@192.168.27.129`
-`ll --full-time -rt`|显示文件列表，具体时间，并按照时间排序
-`su -sh *`|显示文件夹占用空间
+`ll --full-time -rt`|显示文件列表，具体时间，并按照时间排序|-
+`du -sh *`|显示文件夹占用空间|-
+`free`|显示内存信息|-
+`df -h`|显示文件磁盘信息|-
+
 
 </div>
 
